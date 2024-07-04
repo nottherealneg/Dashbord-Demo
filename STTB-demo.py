@@ -1,4 +1,3 @@
-#📌 POWER VOLTAGE
 #libs
 import streamlit as st
 import pandas as pd
@@ -7,7 +6,7 @@ import plotly.graph_objs as go
 import plotly.express as px
 
 
-
+#PAGE CONFIG
 st.set_page_config(
     page_title = 'STTB-monitoring-demo-dash',
     page_icon = '✅',
@@ -38,7 +37,6 @@ with col2:
 
 
 # Date selection
-
 dates = df['Date'].unique()
 selected_date = st.date_input('Select Date', min_value=dates.min(), max_value=dates.max(), value=dates[0])
 day_df = df[df['Date'] == selected_date]
