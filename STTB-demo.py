@@ -13,6 +13,19 @@ st.set_page_config(
     layout = 'wide'
 )
 
+# add background
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background-image: url("bg.jpg");
+        background-size: cover;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 # Load data
 @st.cache_data
 def load_data():
