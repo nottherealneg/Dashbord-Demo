@@ -16,11 +16,53 @@ st.set_page_config(
 )
 
 # Force dark theme
+
 st.markdown("""
     <style>
         .stApp {
             background-color: #0e1117;
             color: #fafafa;
+        }
+        
+        /* Headers */
+        h1, h2, h3, h4, h5, h6 {
+            color: white !important;
+        }
+        
+        /* Custom title */
+        .custom-title {
+            font-family: 'Abjad', 'Arial', sans-serif !important;
+            font-size: 40px !important;  /* Increased size */
+            font-weight: bold !important;
+            color: white !important;
+            text-align: right !important;
+        }
+        
+        /* Expander (setting box) */
+        .streamlit-expanderHeader {
+            background-color: #262730 !important;
+            color: white !important;
+            font-weight: bold !important;
+        }
+        .streamlit-expanderContent {
+            background-color: #262730 !important;
+            color: white !important;
+        }
+        
+        /* Checkbox */
+        .stCheckbox label {
+            color: white !important;
+        }
+        
+        /* All text inputs and selectboxes */
+        .stTextInput, .stSelectbox {
+            color: white !important;
+        }
+        
+        /* Sidebar */
+        [data-testid="stSidebar"] {
+            background-color: #0e1117;
+            color: white;
         }
     </style>
 """, unsafe_allow_html=True)
