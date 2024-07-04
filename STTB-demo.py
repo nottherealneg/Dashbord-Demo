@@ -33,19 +33,6 @@ with st.sidebar:
     dashboard = st.button("📊 Dashboard")
     settings = st.button("⚙️ Settings")
 
-# Main content
-if home:
-    st.title("Home Page")
-    # Add content for home page
-elif dashboard:
-    st.title("Dashboard")
-    # Add content for dashboard
-elif settings:
-    st.title("Settings")
-    # Add content for settings
-else:
-    # Default content (e.g., your existing app content)
-    # ... (rest of your existing code) ...
 
 # Load data
 @st.cache_data
