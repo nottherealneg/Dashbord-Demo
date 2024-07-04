@@ -25,7 +25,7 @@ def load_data():
 
 df = load_data()
 
-st.title('مانیتورینگ اینورتر')
+st.title('مانیتورینگ اینورتر شرکت سولار توان تابش (دمو)' )
 
 # Date selection
 
@@ -95,10 +95,10 @@ def create_section_plots(header, variables):
                 st.warning(f"No data available for {variable}")
 
 # Create sections with their respective plots
-create_section_plots("Power", ['Pdc', 'Pac'])
-create_section_plots("Current", ['Iac', 'Ipv'])
-create_section_plots("Voltage", ['Uac', 'Upv'])
-create_section_plots("Energy", ['Eac'])
+create_section_plots("توان", ['Pdc', 'Pac'])
+create_section_plots("جریان", ['Iac', 'Ipv'])
+create_section_plots("ولتاژ", ['Uac', 'Upv'])
+create_section_plots("انرژی", ['Eac'])
 
 def create_pv_plot(variable, selected_inverter, selected_number):
     if variable == 'AC P-V':
@@ -129,7 +129,7 @@ def create_pv_plot(variable, selected_inverter, selected_number):
         return None
     
 
-st.header("Power-Voltage Curves")
+st.header("توان - ولتاژ")
 pv_cols = st.columns(2)
 for i, pv_var in enumerate(['AC P-V', 'DC P-V']):
     with pv_cols[i]:
@@ -141,5 +141,5 @@ for i, pv_var in enumerate(['AC P-V', 'DC P-V']):
             st.warning(f"No data available for {pv_var}")
 
 # Data information
-if st.checkbox("### Detailed Data View"):
+if st.checkbox("### نمایش دیتا"):
    st.dataframe(df)  
