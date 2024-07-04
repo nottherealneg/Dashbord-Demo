@@ -80,6 +80,26 @@ def bg(image_file):
         border-radius: 10px;
         padding: 10px;
     }}
+     
+    
+    /* Style for settings box and checkboxes */
+    .stCheckbox {{
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 10px;
+        border-radius: 5px;
+    }}
+    
+    .stCheckbox label {{
+        color: #0066cc;
+        font-weight: bold;
+    }}
+    
+    /* Style for dataframe */
+    .stDataFrame {{
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 5px;
+        padding: 10px;
+    }}
     </style>
     """,
     unsafe_allow_html=True
