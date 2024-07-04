@@ -46,7 +46,7 @@ with col1:
     st.image(logo, width=150)  
 
 with col2:
-    st.title('مانیتورینگ هوشمند شرکت سـولار تابش توان بین الملل)')
+    st.title('مانیتورینگ هوشمند شرکت سـولار تابش توان بین الملل')
 
 
 # Date selection
