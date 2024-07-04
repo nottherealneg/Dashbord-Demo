@@ -17,7 +17,7 @@ st.markdown("""
 <style>
 .custom-title {
     font-family: 'Abjad', 'Arial', sans-serif !important;
-    font-size: 64px !important;
+    font-size: 50px !important;
     font-weight: bold !important;
     color: white !important;
     text-align: center !important;
@@ -76,13 +76,8 @@ dates = df['Date'].unique()
 
 # Add logo
 logo = Image.open('logo.png')
-col1, col2 = st.columns([1, 3]) 
+st.image(logo, width=150)  
 
-with col1:
-    st.image(logo, width=200)  
-
-with col2:
-    st.markdown('<p class="custom-title">مانیتورینگ هوشمند شرکت سـولار تابش توان بین الملل</p>', unsafe_allow_html=True)
 
 def get_column_name(variable, number=None, inverter=None):
     if variable in ['Iac', 'Ipv']:
