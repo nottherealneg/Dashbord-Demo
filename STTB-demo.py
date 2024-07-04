@@ -28,6 +28,7 @@ st.markdown("""
 
 # add background
 
+
 def bg(image_file):
     with open(image_file, "rb") as image_file:
         encoded_string = base64.b64encode(image_file.read())
@@ -38,72 +39,11 @@ def bg(image_file):
         background-image: url(data:image/{"png"};base64,{encoded_string.decode()});
         background-size: cover;
     }}
-    
-    /* White background for sidebar */
-    [data-testid="stSidebar"] {{
-        background-color: rgba(255, 255, 255, 0.8);
-        border-radius: 10px;
-        padding: 20px;
-    }}
-    
-    /* White background for headers */
-    h1, h2, h3, h4, h5, h6 {{
-        background-color: rgba(255, 255, 255, 0.8);
-        padding: 10px;
-        border-radius: 5px;
-        color: #0066cc;  /* Adjust color as needed */
-    }}
-    
-    /* White background for title */
-    .custom-title {{
-        background-color: rgba(255, 255, 255, 0.8) !important;
-        padding: 10px !important;
-        border-radius: 5px !important;
-        color: #0066cc !important;
-    }}
-    
-    /* Ensure text is readable on white backgrounds */
-    .stTextInput label, .stSelectBox label, .stDateInput label {{
-        color: #0066cc;
-    }}
-    
-    /* Style for expanders */
-    .streamlit-expanderHeader {{
-        background-color: rgba(255, 255, 255, 0.8);
-        color: #0066cc;
-        border-radius: 5px;
-    }}
-    
-    /* Style for plotly charts */
-    .js-plotly-plot {{
-        background-color: rgba(255, 255, 255, 0.8);
-        border-radius: 10px;
-        padding: 10px;
-    }}
-     
-    
-    /* Style for settings box and checkboxes */
-    .stCheckbox {{
-        background-color: rgba(255, 255, 255, 0.8);
-        padding: 10px;
-        border-radius: 5px;
-    }}
-    
-    .stCheckbox label {{
-        color: #0066cc;
-        font-weight: bold;
-    }}
-    
-    /* Style for dataframe */
-    .stDataFrame {{
-        background-color: rgba(255, 255, 255, 0.8);
-        border-radius: 5px;
-        padding: 10px;
-    }}
     </style>
     """,
     unsafe_allow_html=True
     )
+
 
 bg('bg4.jpg')  
 
