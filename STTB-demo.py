@@ -223,7 +223,7 @@ if st.checkbox("**درباره ما**"):
     """)
 
 # contact Us section
-if st.checkbox("**تماس با ما*"):
+if st.checkbox("**تماس با ما**"):
     st.markdown("""
     info@solarttb.com
     """)
