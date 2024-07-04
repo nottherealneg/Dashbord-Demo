@@ -1,4 +1,4 @@
-#libs
+# Libraries
 import streamlit as st
 import pandas as pd
 from PIL import Image
@@ -6,11 +6,11 @@ import plotly.graph_objs as go
 import plotly.express as px
 import base64
 
-#PAGE CONFIG
+# PAGE CONFIG
 st.set_page_config(
-    page_title = 'STTB-monitoring-demo-dash',
-    page_icon = '✅',
-    layout = 'wide'
+    page_title='STTB-monitoring-demo-dash',
+    page_icon='✅',
+    layout='wide'
 )
 
 # Font
@@ -26,9 +26,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# add background
-
-
+# Add background
 def bg(image_file):
     with open(image_file, "rb") as image_file:
         encoded_string = base64.b64encode(image_file.read())
@@ -44,12 +42,9 @@ def bg(image_file):
     unsafe_allow_html=True
     )
 
-
 bg('bg4.jpg')  
 
-####
-
-#sidebar
+# Sidebar
 st.markdown("""
 <style>
     [data-testid="stSidebar"][aria-expanded="true"] > div:first-child {
@@ -67,7 +62,6 @@ with st.sidebar:
     dashboard = st.button("📊 داشبورد")
     settings = st.button("⚙️ تنظیمات")
 
-
 # Load data
 @st.cache_data
 def load_data():
@@ -79,8 +73,9 @@ def load_data():
     return df
 
 df = load_data()
+dates = df['Date'].unique()
 
-#add logo
+# Add logo
 logo = Image.open('logo.png')
 col1, col2 = st.columns([1, 3]) 
 
@@ -89,13 +84,6 @@ with col1:
 
 with col2:
     st.markdown('<p class="custom-title">مانیتورینگ هوشمند شرکت سـولار تابش توان بین الملل</p>', unsafe_allow_html=True)
-
-
-# Date selection
-dates = df['Date'].unique()
-st.markdown('## تاریخ', unsafe_allow_html=True)
-selected_date = st.date_input('', min_value=dates.min(), max_value=dates.max(), value=dates[0])
-day_df = df[df['Date'] == selected_date]
 
 def get_column_name(variable, number=None, inverter=None):
     if variable in ['Iac', 'Ipv']:
@@ -109,12 +97,14 @@ def get_column_name(variable, number=None, inverter=None):
 
 plot_variables = ['Pdc', 'Pac', 'Iac', 'Ipv', 'Uac', 'Upv', 'Eac']
 
-# create plot
-def create_plot(variable, selected_inverter, selected_number=None):
+# Create plot
+def create_plot(variable, selected_date, selected_inverter, selected_number=None):
     if variable in ['Iac', 'Ipv', 'Uac', 'Upv']:
         column_name = get_column_name(variable, selected_number, selected_inverter)
     else:
         column_name = get_column_name(variable, inverter=selected_inverter)
+    
+    day_df = df[df['Date'] == selected_date]
     
     if column_name in day_df.columns:
         fig = go.Figure()
@@ -132,9 +122,10 @@ def create_plot(variable, selected_inverter, selected_number=None):
     else:
         return None
 
-# create settings
+# Create settings
 def create_settings(variable, key_prefix):
     with st.expander(f"{variable} تنظیمات", expanded=False):
+        selected_date = st.date_input('تاریخ', min_value=dates.min(), max_value=dates.max(), value=dates[0], key=f'{key_prefix}_date')
         selected_inverter = st.selectbox(f'شماره اینورتر', range(1, 7), key=f'{key_prefix}_inverter')
         if variable in ['Iac', 'Ipv', 'Uac', 'Upv', 'AC P-V', 'DC P-V']:
             num_options = 3 if variable in ['Iac', 'Uac', 'AC P-V'] else 4
@@ -143,16 +134,16 @@ def create_settings(variable, key_prefix):
                                            key=f'{key_prefix}_شماره')
         else:
             selected_number = None
-    return selected_inverter, selected_number
+    return selected_date, selected_inverter, selected_number
 
-# create plots for a section
+# Create plots for a section
 def create_section_plots(header, variables):
     st.header(header)
     cols = st.columns(len(variables))
     for i, variable in enumerate(variables):
         with cols[i]:
-            selected_inverter, selected_number = create_settings(variable, f'plot_{variable}')
-            fig = create_plot(variable, selected_inverter, selected_number)
+            selected_date, selected_inverter, selected_number = create_settings(variable, f'plot_{variable}')
+            fig = create_plot(variable, selected_date, selected_inverter, selected_number)
             if fig:
                 st.plotly_chart(fig, use_container_width=True)
             else:
@@ -164,7 +155,7 @@ create_section_plots("جریان", ['Iac', 'Ipv'])
 create_section_plots("ولتاژ", ['Uac', 'Upv'])
 create_section_plots("انرژی", ['Eac'])
 
-def create_pv_plot(variable, selected_inverter, selected_number):
+def create_pv_plot(variable, selected_date, selected_inverter, selected_number):
     if variable == 'AC P-V':
         power_var, voltage_var = 'Pac', 'Uac'
     else:  # DC P-V
@@ -172,6 +163,8 @@ def create_pv_plot(variable, selected_inverter, selected_number):
     
     power_col = get_column_name(power_var, inverter=selected_inverter)
     voltage_col = get_column_name(voltage_var, number=selected_number, inverter=selected_inverter)
+    
+    day_df = df[df['Date'] == selected_date]
     
     if power_col in day_df.columns and voltage_col in day_df.columns:
         fig = px.line(day_df, x=voltage_col, y=power_col,
@@ -185,20 +178,18 @@ def create_pv_plot(variable, selected_inverter, selected_number):
             legend_title_text='Legend'
         )
         
-        # Customize the legend
         fig.update_traces(name=f'Inverter {selected_inverter}')
         
         return fig
     else:
         return None
-    
 
 st.header("توان - ولتاژ")
 pv_cols = st.columns(2)
 for i, pv_var in enumerate(['AC P-V', 'DC P-V']):
     with pv_cols[i]:
-        selected_inverter, selected_number = create_settings(pv_var, f'plot_{pv_var}')
-        fig = create_pv_plot(pv_var, selected_inverter, selected_number)
+        selected_date, selected_inverter, selected_number = create_settings(pv_var, f'plot_{pv_var}')
+        fig = create_pv_plot(pv_var, selected_date, selected_inverter, selected_number)
         if fig:
             st.plotly_chart(fig, use_container_width=True)
         else:
@@ -208,7 +199,7 @@ for i, pv_var in enumerate(['AC P-V', 'DC P-V']):
 if st.checkbox("### نمایش دیتا",key="show_data"):
    st.dataframe(df)  
 
-   # About Us section
+# About Us section
 if st.checkbox("**ABOUT US**",key="about_us"):
     st.markdown("""
     Solar Tabesh Tavan BNL (STTB) Company was founded in 2014.
