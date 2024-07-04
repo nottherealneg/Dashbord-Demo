@@ -74,7 +74,7 @@ def create_settings(variable, key_prefix):
         selected_inverter = st.selectbox(f'شماره اینورتر', range(1, 7), key=f'{key_prefix}_inverter')
         if variable in ['Iac', 'Ipv', 'Uac', 'Upv', 'AC P-V', 'DC P-V']:
             num_options = 3 if variable in ['Iac', 'Uac', 'AC P-V'] else 4
-            selected_number = st.selectbox(f'{variable.split()[-1] if "V" in variable else variable} number', 
+            selected_number = st.selectbox(f'{variable.split()[-1] if "V" in variable else variable} شماره', 
                                            range(1, num_options + 1), 
                                            key=f'{key_prefix}_شماره')
         else:
