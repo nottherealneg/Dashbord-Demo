@@ -22,16 +22,16 @@ st.markdown("""
         width: 350px;
     }
     [data-testid="stSidebar"][aria-expanded="false"] > div:first-child {
-        width: 350px;
+        width:100px;
         margin-left: -350px;
     }
 </style>
 """, unsafe_allow_html=True)
 with st.sidebar:
-    st.markdown("# Menu")
-    home = st.button("🏠 Home")
-    dashboard = st.button("📊 Dashboard")
-    settings = st.button("⚙️ Settings")
+    st.markdown("#منو" )
+    home = st.button("  🏠 خانه ")
+    dashboard = st.button("📊 داشبورد")
+    settings = st.button("⚙️ تنظیمات")
 
 
 # Load data
