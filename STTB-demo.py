@@ -28,7 +28,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 with st.sidebar:
-    st.markdown("#منو" )
+    st.markdown(' منو#  ' )
     home = st.button("  🏠 خانه ")
     dashboard = st.button("📊 داشبورد")
     settings = st.button("⚙️ تنظیمات")
