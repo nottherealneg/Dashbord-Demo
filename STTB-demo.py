@@ -127,8 +127,8 @@ def create_settings(variable, key_prefix):
         st.markdown('<style>div[data-testid="stExpander"] div[role="button"] p {color: #0066cc;}</style>', unsafe_allow_html=True)
         selected_date = st.date_input('تاریخ', min_value=dates.min(), max_value=dates.max(), value=dates[0], key=f'{key_prefix}_date')
         selected_inverter = st.selectbox(f'شماره اینورتر', range(1, 7), key=f'{key_prefix}_inverter')
-        if variable in ['Iac', 'Ipv', 'Uac', 'Upv', 'AC P-V', 'DC P-V']:
-            num_options = 3 if variable in ['Iac', 'Uac', 'AC P-V'] else 4
+        if variable in ['Iac', 'Ipv', 'Uac', 'Upv']:
+            num_options = 3 if variable in ['Iac', 'Uac'] else 4
             selected_number = st.selectbox(f'{variable.split()[-1] if "V" in variable else variable} شماره', 
                                            range(1, num_options + 1), 
                                            key=f'{key_prefix}_شماره')
@@ -155,48 +155,14 @@ create_section_plots("جریان", ['Iac', 'Ipv'])
 create_section_plots("ولتاژ", ['Uac', 'Upv'])
 create_section_plots("انرژی", ['Eac'])
 
-def create_pv_plot(variable, selected_date, selected_inverter, selected_number):
-    if variable == 'AC P-V':
-        power_var, voltage_var = 'Pac', 'Uac'
-    else:  # DC P-V
-        power_var, voltage_var = 'Pdc', 'Upv'
-    
-    power_col = get_column_name(power_var, inverter=selected_inverter)
-    voltage_col = get_column_name(voltage_var, number=selected_number, inverter=selected_inverter)
-    
-    day_df = df[df['Date'] == selected_date]
-    
-    if power_col in day_df.columns and voltage_col in day_df.columns:
-        fig = px.line(day_df, x=voltage_col, y=power_col,
-                         title=f'{variable} (Inv {selected_inverter}, {voltage_var}{selected_number})')
-        
-        fig.update_layout(
-            xaxis_title=f"{voltage_var} (V)",
-            yaxis_title=f"{power_var} (kW)",
-            height=400,
-            margin=dict(l=50, r=50, t=50, b=50),
-            legend_title_text='Legend'
-        )
-        
-        fig.update_traces(name=f'Inverter {selected_inverter}')
-        
-        return fig
-    else:
-        return None
 
-st.header("توان - ولتاژ")
-pv_cols = st.columns(2)
-for i, pv_var in enumerate(['AC P-V', 'DC P-V']):
-    with pv_cols[i]:
-        selected_date, selected_inverter, selected_number = create_settings(pv_var, f'plot_{pv_var}')
-        fig = create_pv_plot(pv_var, selected_date, selected_inverter, selected_number)
-        if fig:
-            st.plotly_chart(fig, use_container_width=True)
-        else:
-            st.warning(f"No data available for {pv_var}")
+
+
+
+##################################checkbox
 
 # Data information
-if st.checkbox("### نمایش دیتا"):
+if st.checkbox("**نمایش دیتا**"):
    st.dataframe(df)  
 
 # About Us section
@@ -213,5 +179,5 @@ if st.checkbox("**درباره ما**"):
 # contact Us section
 if st.checkbox("**تماس با ما**"):
     st.markdown("""
-    info@solarttb.com
+     **📧** info@solarttb.com
     """)
