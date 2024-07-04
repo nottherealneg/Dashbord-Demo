@@ -18,8 +18,18 @@ st.markdown(
     """
     <style>
     .stApp {
-        background-image: url("bg.jpg");
+        background-image: url("gb.jpg");
         background-size: cover;
+    }
+    .stApp::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.7);  /* White overlay with 70% opacity */
+        z-index: -1;
     }
     </style>
     """,
@@ -51,7 +61,7 @@ with col2:
 
 # Date selection
 dates = df['Date'].unique()
-selected_date = st.date_input('Select Date', min_value=dates.min(), max_value=dates.max(), value=dates[0])
+selected_date = st.date_input( 'تاریخ', min_value=dates.min(), max_value=dates.max(), value=dates[0])
 day_df = df[df['Date'] == selected_date]
 
 def get_column_name(variable, number=None, inverter=None):
