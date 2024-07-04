@@ -15,7 +15,7 @@ def load_data():
     return df
 
 df = load_data()
-st.title('Inverter Dashboard')
+st.title('مانیتورنگ اینورتر- دمو')
 
 # Date selection 
 dates = df['Date'].unique()
