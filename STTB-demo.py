@@ -27,10 +27,8 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # add background
-import base64
 
 def bg(image_file):
-
     with open(image_file, "rb") as image_file:
         encoded_string = base64.b64encode(image_file.read())
     st.markdown(
@@ -53,7 +51,7 @@ def bg(image_file):
         background-color: rgba(255, 255, 255, 0.8);
         padding: 10px;
         border-radius: 5px;
-        color: #0066cc;
+        color: #0066cc;  /* Adjust color as needed */
     }}
     
     /* White background for title */
@@ -81,33 +79,6 @@ def bg(image_file):
         background-color: rgba(255, 255, 255, 0.8);
         border-radius: 10px;
         padding: 10px;
-    }}
-    
-    /* Style for settings box and checkboxes */
-    .stCheckbox {{
-        background-color: rgba(255, 255, 255, 0.8);
-        padding: 10px;
-        border-radius: 5px;
-    }}
-    
-    .stCheckbox label {{
-        color: #0066cc;
-        font-weight: bold;
-    }}
-    
-    /* Style for dataframe */
-    .stDataFrame {{
-        background-color: rgba(255, 255, 255, 0.8);
-        border-radius: 5px;
-        padding: 10px;
-    }}
-    
-    /* Style for markdown text */
-    .stMarkdown {{
-        background-color: rgba(255, 255, 255, 0.8);
-        border-radius: 5px;
-        padding: 10px;
-        color: #0066cc;
     }}
     </style>
     """,
