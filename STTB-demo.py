@@ -8,7 +8,7 @@ import base64
 
 # PAGE CONFIG
 st.set_page_config(
-    page_title='مانیتورینگ هوشمند شرکت سـولار تابش توان بین الملل<',
+    page_title="STTB Monitoring",
     page_icon='✅',
     layout='wide',
     initial_sidebar_state='expanded')
@@ -74,7 +74,15 @@ def load_data():
 df = load_data()
 dates = df['Date'].unique()
 
- 
+ #add logo
+logo = Image.open('logo.png')
+col1, col2 = st.columns([1, 3]) 
+
+with col1:
+    st.image(logo, width=400)  
+
+with col2:
+    st.markdown('<p class="custom-title">مانیتورینگ هوشمند شرکت سـولار تابش توان بین الملل</p>', unsafe_allow_html=True) 
 
 
 def get_column_name(variable, number=None, inverter=None):
