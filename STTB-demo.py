@@ -37,12 +37,54 @@ def add_bg_from_local(image_file):
         background-image: url(data:image/{"png"};base64,{encoded_string.decode()});
         background-size: cover;
     }}
+    
+    /* White background for sidebar */
+    [data-testid="stSidebar"] {{
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 10px;
+        padding: 20px;
+    }}
+    
+    /* White background for headers */
+    h1, h2, h3, h4, h5, h6 {{
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 10px;
+        border-radius: 5px;
+        color: #0066cc;  /* Adjust color as needed */
+    }}
+    
+    /* White background for title */
+    .custom-title {{
+        background-color: rgba(255, 255, 255, 0.8) !important;
+        padding: 10px !important;
+        border-radius: 5px !important;
+        color: #0066cc !important;
+    }}
+    
+    /* Ensure text is readable on white backgrounds */
+    .stTextInput label, .stSelectBox label, .stDateInput label {{
+        color: #0066cc;
+    }}
+    
+    /* Style for expanders */
+    .streamlit-expanderHeader {{
+        background-color: rgba(255, 255, 255, 0.8);
+        color: #0066cc;
+        border-radius: 5px;
+    }}
+    
+    /* Style for plotly charts */
+    .js-plotly-plot {{
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 10px;
+        padding: 10px;
+    }}
     </style>
     """,
     unsafe_allow_html=True
     )
 
-add_bg_from_local('bg3.jpg')
+add_bg_from_local('bg3.jpg') 
 ####
 
 #sidebar
