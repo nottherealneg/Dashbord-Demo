@@ -27,7 +27,10 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # add background
-def add_bg_from_local(image_file):
+import base64
+
+def bg(image_file):
+
     with open(image_file, "rb") as image_file:
         encoded_string = base64.b64encode(image_file.read())
     st.markdown(
@@ -50,7 +53,7 @@ def add_bg_from_local(image_file):
         background-color: rgba(255, 255, 255, 0.8);
         padding: 10px;
         border-radius: 5px;
-        color: #0066cc;  /* Adjust color as needed */
+        color: #0066cc;
     }}
     
     /* White background for title */
@@ -79,12 +82,40 @@ def add_bg_from_local(image_file):
         border-radius: 10px;
         padding: 10px;
     }}
+    
+    /* Style for settings box and checkboxes */
+    .stCheckbox {{
+        background-color: rgba(255, 255, 255, 0.8);
+        padding: 10px;
+        border-radius: 5px;
+    }}
+    
+    .stCheckbox label {{
+        color: #0066cc;
+        font-weight: bold;
+    }}
+    
+    /* Style for dataframe */
+    .stDataFrame {{
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 5px;
+        padding: 10px;
+    }}
+    
+    /* Style for markdown text */
+    .stMarkdown {{
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 5px;
+        padding: 10px;
+        color: #0066cc;
+    }}
     </style>
     """,
     unsafe_allow_html=True
     )
 
-add_bg_from_local('bg3.jpg') 
+bg('bg3.jpg')  
+
 ####
 
 #sidebar
@@ -243,11 +274,11 @@ for i, pv_var in enumerate(['AC P-V', 'DC P-V']):
             st.warning(f"No data available for {pv_var}")
 
 # Data information
-if st.checkbox("### نمایش دیتا"):
+if st.checkbox("### نمایش دیتا",key="show_data"):
    st.dataframe(df)  
 
    # About Us section
-if st.checkbox("**ABOUT US**"):
+if st.checkbox("**ABOUT US**",key="about_us"):
     st.markdown("""
     Solar Tabesh Tavan BNL (STTB) Company was founded in 2014.
     STTB is a renewables technology and knowledge-based company 
