@@ -1,4 +1,3 @@
-# Dashbord-Demo
 
 # STTB Inverter Monitoring Dashboard
 
