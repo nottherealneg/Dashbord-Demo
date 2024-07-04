@@ -43,7 +43,7 @@ plot_variables = ['Pdc', 'Pac', 'Iac', 'Ipv', 'Uac', 'Upv', 'Eac']
 plot_col, settings_col = st.columns([3, 1])
 
 with settings_col:
-    st.subheader("Plot Settings")
+    st.subheader("تنظیمات")
     for plot, variable in enumerate(plot_variables, 1):
         st.markdown(f"**{variable} Settings**")
         selected_inverter = st.selectbox(f'Inverter for {variable}', range(1, 7), key=f'inverter_{plot}')
@@ -74,15 +74,15 @@ with plot_col:
             fig.update_xaxes(title_text="Hour", row=plot, col=1)
             fig.update_yaxes(title_text=variable, row=plot, col=1)
             
-            # Update subplot title
+            # subplot title
             subplot_title = f'{variable} (Inv {selected_inverter})'
             if variable in ['Iac', 'Ipv', 'Uac', 'Upv']:
                 subplot_title += f' - {variable}{selected_number}'
             fig.layout.annotations[plot-1].update(text=subplot_title)
 
-    # Update layout and display the plot
+    # layout
     fig.update_layout(
-    height=1400,  # You can adjust this initial height
+    height=1400,  
     title_text=f'Inverter Data for {selected_date}',
     showlegend=True,
     autosize=True,
@@ -97,7 +97,7 @@ with plot_col:
 
 )
     for i, annotation in enumerate(fig['layout']['annotations'][:7]):
-        annotation['y'] = 1 - (i * 1/7)  # Distribute titles evenly
+        annotation['y'] = 1 - (i * 1/7) 
         annotation['x'] = 0.5
         annotation['xanchor'] = 'center'
         annotation['yanchor'] = 'bottom'
@@ -105,7 +105,7 @@ with plot_col:
     st.plotly_chart(fig, use_container_width=True)
 
 # Debug information
-if st.checkbox("Show debug information"):
-    st.write(f"Number of rows for selected date: {len(day_df)}")
-    st.write("All column names:")
-    st.write(day_df.columns.tolist())
+#if st.checkbox("Show debug information"):
+   # st.write(f"Number of rows for selected date: {len(day_df)}")
+    #st.write("All column names:")
+    #st.write(day_df.columns.tolist())
