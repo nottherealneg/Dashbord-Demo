@@ -14,38 +14,7 @@ st.set_page_config(
 )
 
 # add background
-st.markdown("""
-<style>
-    .stApp {
-        background-color: #E6F3FF;  /* Light blue color */
-    }
-    [data-testid="stSidebar"][aria-expanded="true"] > div:first-child {
-        width: 350px;
-    }
-    [data-testid="stSidebar"][aria-expanded="false"] > div:first-child {
-        width: 350px;
-        margin-left: -350px;
-    }
-    [data-testid="stSidebar"][aria-expanded="true"] {
-        position: fixed;
-        right: 0;
-        top: 0;
-        height: 100vh;
-        width: 350px !important;
-    }
-    [data-testid="stSidebar"][aria-expanded="false"] {
-        position: fixed;
-        right: 0;
-        top: 0;
-        height: 100vh;
-        width: 350px !important;
-        margin-left: auto !important;
-        transform: translateX(100%);
-    }
-</style>
-""", unsafe_allow_html=True)
 
-# Rest of your code remains the same
 #sidebar
 st.markdown("""
 <style>
