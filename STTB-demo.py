@@ -126,7 +126,7 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
         y_axis_title = y_axis_titles.get(variable, variable)  # Use the original variable name if not found in the dictionary
         
         fig.update_layout(
-            title=f'{variable} (inv {selected_inverter})' + (f' - {variable}{selected_number}' if selected_number else ''),
+            title=f'(inv {selected_inverter})' + (f' - {variable}{selected_number}' if selected_number else ''),
             xaxis_title="زمان",
             yaxis_title=y_axis_title,
             height=400,
