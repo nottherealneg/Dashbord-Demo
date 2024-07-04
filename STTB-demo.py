@@ -72,7 +72,7 @@ with col2:
 
 # Date selection
 dates = df['Date'].unique()
-st.markdown('### تاریخ', unsafe_allow_html=True)
+st.markdown('## تاریخ', unsafe_allow_html=True)
 selected_date = st.date_input('', min_value=dates.min(), max_value=dates.max(), value=dates[0])
 day_df = df[df['Date'] == selected_date]
 
