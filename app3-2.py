@@ -83,7 +83,7 @@ with plot_col:
     # layout
     fig.update_layout(
     height=1400,  
-    title_text=f'Inverter Data for {selected_date}',
+    title_text=f'دیتا اینورتر مربوط به بازه زمانی :‌ {selected_date}',
     showlegend=True,
     autosize=True,
     margin=dict(l=50, r=50, t=100, b=50),
