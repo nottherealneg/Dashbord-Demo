@@ -5,6 +5,28 @@ from PIL import Image
 import plotly.graph_objs as go
 import plotly.express as px
 
+st.markdown("""
+<style>
+@font-face {
+    font-family: 'Vazir';
+    src: url('https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir.eot');
+    src: url('https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir.eot?#iefix') format('embedded-opentype'),
+         url('https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir.woff2') format('woff2'),
+         url('https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir.woff') format('woff'),
+         url('https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.custom-title {
+    font-family: 'Vazir', sans-serif !important;
+    font-size: 32px !important;
+    font-weight: bold !important;
+    color: #0066cc !important;
+    text-align: right !important;
+}
+</style>
+""", unsafe_allow_html=True)
 
 #PAGE CONFIG
 st.set_page_config(
@@ -14,6 +36,7 @@ st.set_page_config(
 )
 
 # add background
+####
 
 #sidebar
 st.markdown("""
@@ -54,7 +77,7 @@ with col1:
     st.image(logo, width=150)  
 
 with col2:
-    st.title('مانیتورینگ هوشمند شرکت سـولار تابش توان بین الملل')
+    st.markdown('<p class="custom-title">مانیتورینگ هوشمند شرکت سـولار تابش توان بین الملل</p>', unsafe_allow_html=True)
 
 
 # Date selection
