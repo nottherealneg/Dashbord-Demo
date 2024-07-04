@@ -5,6 +5,14 @@ from PIL import Image
 import plotly.graph_objs as go
 import plotly.express as px
 
+#PAGE CONFIG
+st.set_page_config(
+    page_title = 'STTB-monitoring-demo-dash',
+    page_icon = '✅',
+    layout = 'wide'
+)
+
+# Now you can add your custom CSS
 st.markdown("""
 <style>
 .custom-title {
@@ -16,15 +24,6 @@ st.markdown("""
 }
 </style>
 """, unsafe_allow_html=True)
-
-
-
-#PAGE CONFIG
-st.set_page_config(
-    page_title = 'STTB-monitoring-demo-dash',
-    page_icon = '✅',
-    layout = 'wide'
-)
 
 # add background
 ####
