@@ -12,7 +12,7 @@ st.set_page_config(
     layout = 'wide'
 )
 
-# Now you can add your custom CSS
+# Font
 st.markdown("""
 <style>
 .custom-title {
@@ -72,7 +72,8 @@ with col2:
 
 # Date selection
 dates = df['Date'].unique()
-selected_date = st.date_input( 'تاریخ', min_value=dates.min(), max_value=dates.max(), value=dates[0])
+st.markdown('### تاریخ', unsafe_allow_html=True)
+selected_date = st.date_input('', min_value=dates.min(), max_value=dates.max(), value=dates[0])
 day_df = df[df['Date'] == selected_date]
 
 def get_column_name(variable, number=None, inverter=None):
