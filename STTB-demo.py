@@ -10,8 +10,20 @@ import base64
 st.set_page_config(
     page_title='STTB-monitoring-demo-dash',
     page_icon='✅',
-    layout='wide'
+    layout='wide',
+    initial_sidebar_state='expanded',
+    menu_items=None
 )
+
+# Force dark theme
+st.markdown("""
+    <style>
+        .stApp {
+            background-color: #0e1117;
+            color: #fafafa;
+        }
+    </style>
+""", unsafe_allow_html=True)
 
 # Font
 st.markdown("""
