@@ -2,6 +2,7 @@
 #libs
 import streamlit as st
 import pandas as pd
+from PIL import Image
 import plotly.graph_objs as go
 import plotly.express as px
 
@@ -25,7 +26,16 @@ def load_data():
 
 df = load_data()
 
-st.title('مانیتورینگ اینورتر شرکت سـولار تابش توان بین الملل (دمو)' )
+#add logo
+logo = Image.open('logo.png')
+col1, col2 = st.columns([1, 3]) 
+
+with col1:
+    st.image(logo, width=150)  
+
+with col2:
+    st.title('مانیتورینگ اینورتر شرکت سـولار تابش توان بین الملل (دمو)')
+
 
 # Date selection
 
