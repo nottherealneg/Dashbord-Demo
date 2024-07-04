@@ -114,13 +114,13 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
         
         # Define y-axis title based on variable
         y_axis_titles = {
-            'Iac': "جریان AC",
-            'Pdc': "توان DC",
-            'Pac': "توان AC",
-            'Ipv': "جریان DC",
-            'Uac': "ولتاژ AC",
-            'Upv': "ولتاژ DC",
-            'Eac': 'انرژی'
+            'Iac': "AC جریان ",
+            'Pdc': "DC توان ",
+            'Pac': "AC توان",
+            'Ipv': "DC جریان ",
+            'Uac': "AC ولتاژ ",
+            'Upv': "DC ولتاژ ",
+            'Eac': '(kWh)انرژی '
         }
         
         y_axis_title = y_axis_titles.get(variable, variable)  # Use the original variable name if not found in the dictionary
