@@ -25,7 +25,7 @@ def load_data():
 
 df = load_data()
 
-st.title('مانیتورینگ اینورتر شرکت سولار توان تابش (دمو)' )
+st.title('مانیتورینگ اینورتر شرکت سـولار تابش توان بین الملل (دمو)' )
 
 # Date selection
 
@@ -143,3 +143,14 @@ for i, pv_var in enumerate(['AC P-V', 'DC P-V']):
 # Data information
 if st.checkbox("### نمایش دیتا"):
    st.dataframe(df)  
+
+   # About Us section
+if st.checkbox("**ABOUT US**"):
+    st.markdown("""
+    Solar Tabesh Tavan BNL (STTB) Company was founded in 2014.
+    STTB is a renewables technology and knowledge-based company 
+    with specialized expertise in solar and wind energy, research 
+    and development (R&D) management. STTB have a close cooperation 
+    with the best research institutes like Fraunhofer & VDE ,
+    universities, suppliers, laboratories in Germany, UK, Italy, Denmark and Switzerland.
+    """)
