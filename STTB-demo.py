@@ -23,6 +23,17 @@ st.markdown("""
     color: #0066cc !important;
     text-align: right !important;
 }
+
+/* New styles for the expander */
+.streamlit-expanderHeader {
+    background-color: white !important;
+    color: #0066cc !important;
+    font-weight: bold !important;
+}
+.streamlit-expanderContent {
+    background-color: white !important;
+    color: #0066cc !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -125,6 +136,7 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
 # Create settings
 def create_settings(variable, key_prefix):
     with st.expander(f"{variable} تنظیمات", expanded=False):
+        st.markdown('<style>div[data-testid="stExpander"] div[role="button"] p {color: #0066cc;}</style>', unsafe_allow_html=True)
         selected_date = st.date_input('تاریخ', min_value=dates.min(), max_value=dates.max(), value=dates[0], key=f'{key_prefix}_date')
         selected_inverter = st.selectbox(f'شماره اینورتر', range(1, 7), key=f'{key_prefix}_inverter')
         if variable in ['Iac', 'Ipv', 'Uac', 'Upv', 'AC P-V', 'DC P-V']:
