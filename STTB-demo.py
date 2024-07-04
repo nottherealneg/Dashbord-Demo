@@ -42,7 +42,7 @@ def add_bg_from_local(image_file):
     unsafe_allow_html=True
     )
 
-add_bg_from_local('bg.jpg')
+add_bg_from_local('bg3.jpg')
 ####
 
 #sidebar
