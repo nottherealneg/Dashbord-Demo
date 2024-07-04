@@ -19,10 +19,10 @@ st.set_page_config(
 st.markdown("""
 <style>
     [data-testid="stSidebar"][aria-expanded="true"] > div:first-child {
-        width: 100px;
+        width: 200px;
     }
     [data-testid="stSidebar"][aria-expanded="false"] > div:first-child {
-        width:100px;
+        width:200px;
         margin-left: -350px;
     }
 </style>
