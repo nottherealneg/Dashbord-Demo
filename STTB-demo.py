@@ -19,7 +19,7 @@ st.set_page_config(
 st.markdown("""
 <style>
     [data-testid="stSidebar"][aria-expanded="true"] > div:first-child {
-        width: 350px;
+        width: 100px;
     }
     [data-testid="stSidebar"][aria-expanded="false"] > div:first-child {
         width:100px;
