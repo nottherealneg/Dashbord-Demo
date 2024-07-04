@@ -7,19 +7,8 @@ import plotly.express as px
 
 st.markdown("""
 <style>
-@font-face {
-    font-family: 'Vazir';
-    src: url('https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir.eot');
-    src: url('https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir.eot?#iefix') format('embedded-opentype'),
-         url('https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir.woff2') format('woff2'),
-         url('https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir.woff') format('woff'),
-         url('https://cdn.fontcdn.ir/Font/Persian/Vazir/Vazir.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-
 .custom-title {
-    font-family: 'Vazir', sans-serif !important;
+    font-family: 'Abjad', 'Arial', sans-serif !important;
     font-size: 32px !important;
     font-weight: bold !important;
     color: #0066cc !important;
@@ -27,6 +16,8 @@ st.markdown("""
 }
 </style>
 """, unsafe_allow_html=True)
+
+
 
 #PAGE CONFIG
 st.set_page_config(
