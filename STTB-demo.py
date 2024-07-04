@@ -14,27 +14,38 @@ st.set_page_config(
 )
 
 # add background
-st.markdown(
-    """
-    <style>
-    .stApp {
-        background-image: url("gb.jpg");
-        background-size: cover;
+
+#sidebar
+st.markdown("""
+<style>
+    [data-testid="stSidebar"][aria-expanded="true"] > div:first-child {
+        width: 350px;
     }
-    .stApp::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(255, 255, 255, 0.7);  /* White overlay with 70% opacity */
-        z-index: -1;
+    [data-testid="stSidebar"][aria-expanded="false"] > div:first-child {
+        width: 350px;
+        margin-left: -350px;
     }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+</style>
+""", unsafe_allow_html=True)
+with st.sidebar:
+    st.markdown("# Menu")
+    home = st.button("🏠 Home")
+    dashboard = st.button("📊 Dashboard")
+    settings = st.button("⚙️ Settings")
+
+# Main content
+if home:
+    st.title("Home Page")
+    # Add content for home page
+elif dashboard:
+    st.title("Dashboard")
+    # Add content for dashboard
+elif settings:
+    st.title("Settings")
+    # Add content for settings
+else:
+    # Default content (e.g., your existing app content)
+    # ... (rest of your existing code) ...
 
 # Load data
 @st.cache_data
