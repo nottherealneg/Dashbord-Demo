@@ -111,11 +111,24 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
         fig.add_trace(
             go.Scatter(x=day_df['Hours'], y=day_df[column_name], name=f'{variable} (Inverter {selected_inverter})')
         )
+        
+        # Define y-axis title based on variable
+        y_axis_titles = {
+            'Iac': "جریان AC",
+            'Pdc': "توان DC",
+            'Pac': "توان AC",
+            'Ipv': "جریان DC",
+            'Uac': "ولتاژ AC",
+            'Upv': "ولتاژ DC",
+            'Eac': 'انرژی'
+        }
+        
+        y_axis_title = y_axis_titles.get(variable, variable)  # Use the original variable name if not found in the dictionary
+        
         fig.update_layout(
-            title=f'{variable} (اینورتر {selected_inverter})' + (f' - {variable}{selected_number}' if selected_number else ''),
+            title=f'{variable} (inv {selected_inverter})' + (f' - {variable}{selected_number}' if selected_number else ''),
             xaxis_title="زمان",
-            
-            yaxis_title=variable,
+            yaxis_title=y_axis_title,
             height=400,
             margin=dict(l=50, r=50, t=50, b=50),
         )
