@@ -11,8 +11,8 @@ import base64
 
 # PAGE CONFIG
 st.set_page_config(
-    page_title="STTB Monitoring",
-    page_icon='✅',
+    page_title="STTB Solar Monitoring",
+    page_icon='🌤️',
     layout='wide',
     initial_sidebar_state='expanded')
 
