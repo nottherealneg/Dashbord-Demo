@@ -56,8 +56,16 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 with st.sidebar:
+    
+    with st.echo():
+        st.write("This code will be printed to the sidebar.")
+
+    with st.spinner("Loading..."):
+        time.sleep(5)
+    st.success("Done!")
     st.markdown(' خوش آمدید' )
     home = st.button("  🏠 خانه ")
+    
     dashboard = st.button("📊 داشبورد")
     settings = st.button("⚙️ تنظیمات")
 
