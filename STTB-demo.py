@@ -213,7 +213,6 @@ st.plotly_chart(fig, use_container_width=True)
 
 
 ##############
-
 def create_plot(variable, selected_date, selected_inverter, selected_number=None):
     if variable in ['Iac', 'Ipv', 'Uac', 'Upv']:
         column_name = get_column_name(variable, selected_number, selected_inverter)
@@ -224,35 +223,28 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
     
     if column_name in day_df.columns:
         if variable == 'InvEfficient':
-            # Get the most recent efficiency value
-            latest_efficiency = day_df[column_name].iloc[-1]
-            
-            # Create gauge chart for the latest efficiency
-            fig1 = go.Figure(go.Indicator(
+            # Gauge chart for efficiency
+            efficiency = day_df[column_name].mean()
+            fig = go.Figure(go.Indicator(
                 mode = "gauge+number",
-                value = latest_efficiency,
+                value = efficiency,
                 domain = {'x': [0, 1], 'y': [0, 1]},
-                title = {'text': f"Current Efficiency - Inverter {selected_inverter}"},
+                title = {'text': f"اینورتر {selected_inverter}بازده میانگین برای "},
                 gauge = {
-                    'axis': {'range': [0, 100]},
+                    'axis': {'range': [None, 100]},
                     'bar': {'color': "darkblue"},
                     'steps' : [
                         {'range': [0, 50], 'color': "lightgray"},
                         {'range': [50, 80], 'color': "gray"},
                         {'range': [80, 100], 'color': "lightblue"}],
                     'threshold' : {'line': {'color': "red", 'width': 4}, 'thickness': 0.75, 'value': 90}}))
-            
-            
-            
-            return fig1
+            fig.update_layout(height=400)
         elif variable in ['Eac', 'Eac Total']:
             # Bar plot for Eac and Eac Total
-            fig = go.Figure(go.Bar(x=day_df['Hours'], y=day_df[column_name], 
-                                   name=f'{variable} (Inverter {selected_inverter})'))
+            fig = go.Figure(go.Bar(x=day_df['Hours'], y=day_df[column_name], name=f'{variable} (Inverter {selected_inverter})'))
         else:
             # Line plot for other variables
-            fig = go.Figure(go.Scatter(x=day_df['Hours'], y=day_df[column_name], 
-                                       name=f'{variable} (Inverter {selected_inverter})'))
+            fig = go.Figure(go.Scatter(x=day_df['Hours'], y=day_df[column_name], name=f'{variable} (Inverter {selected_inverter})'))
         
         # Define y-axis title based on variable
         y_axis_titles = {
