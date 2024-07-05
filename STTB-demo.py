@@ -223,8 +223,7 @@ def create_energy_yield_chart(kpi_date, energy_yields):
         ))
 
     fig.update_layout(
-        
-        xaxis_title="Energy Yield (kWh)",
+        xaxis_title="Energy Yield  (kWh)",
         yaxis_title="اینورتر",
         height=400,
         barmode='stack',
