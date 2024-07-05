@@ -404,7 +404,7 @@ create_section_plots("انرژی ", ['Eac', 'Eac Total'])
 create_section_plots("توان", ['Pdc', 'Pac'])
 create_section_plots("جریان", ['Iac', 'Ipv'])
 create_section_plots("ولتاژ", ['Uac', 'Upv'])
-create_section_plots("دمای اینورتر", ['Temp'])
+
 
 
 ####################
@@ -461,7 +461,7 @@ def create_weather_plots():
                 st.warning(f"No data available for {variable}")
 
 create_weather_plots()
-
+create_section_plots("دمای اینورتر", ['Temp'])
 
 
 ####################
