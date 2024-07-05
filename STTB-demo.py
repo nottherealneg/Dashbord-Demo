@@ -229,7 +229,7 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
                 mode = "gauge+number",
                 value = efficiency,
                 domain = {'x': [0, 1], 'y': [0, 1]},
-                title = {'text': f"بازده میانگین برای  اینورتر {selected_inverter}"},
+                title = {'text': f"بازده میانگین -  اینورتر {selected_inverter}"},
                 gauge = {
                     'axis': {'range': [None, 100]},
                     'bar': {'color': "darkblue"},
