@@ -72,7 +72,7 @@ def logout():
 
 # Sidebar
 with st.sidebar:
-    st.markdown("*خوش آمدید*")
+    st.markdown("**خوش آمدید**")
     if not st.session_state.logged_in:
         st.markdown('## ورود به سیستم')
         username = st.text_input('نام کاربری')
@@ -106,7 +106,7 @@ else:
 
 #################################### chatbot
 #messages = st.container(height=500,border=True)
-prompt = st.chat_input("سلام،خوش آمدید 🤖")
+prompt = st.chat_input("سلام،چه طور میتونم کمکتون کنم ؟ : 🤖")
 if prompt:
     st.write(f"کاربر میهمان: {prompt}")
 #############################
