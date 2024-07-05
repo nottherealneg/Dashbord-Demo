@@ -487,7 +487,10 @@ def create_weather_plots(header, weather_variables):
             else:
                 st.warning(f"No data available for {variable}")
 
-# Usage
+# ######
+
+create_section_plots("دمای اینورتر", ['temp'])
+
 create_weather_plots('(°C) دمای ماژول', ['MODULE_TEMPERATURE'])
 create_weather_plots('(°C) دمای محیط ', ['AMBIENT_TEMPERATURE'])
 create_weather_plots('تابش', ['IRRADIATION'])
