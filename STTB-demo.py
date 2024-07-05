@@ -180,10 +180,9 @@ st.header("شاخص های کلیدی عملکرد", divider='rainbow')
 # Date selection for KPIs
 kpi_date = st.date_input('انتخاب تاریخ جهت محاسبه شاخص ها', min_value=dates.min(), max_value=dates.max(), value=dates[0])
 
+
+
 col1, col2 ,col3= st.columns(2)
-
-
-
 with col1:
     st.subheader("حداکثر توان روزانه")
     peak_power = max(calculate_daily_peak_power(df, kpi_date, i) for i in range(1, 7))
@@ -194,6 +193,7 @@ with col2:
     rated_capacity = 60  # Assuming 60kW rated capacity for each inverter
     avg_utilization = sum(calculate_capacity_utilization(df, kpi_date, i, rated_capacity) for i in range(1, 7)) / 6
     st.metric("Avg Utilization", f"{avg_utilization:.2f}%")
+
 with col3:
     st.subheader("مقایسه تولید انرژی")
     energy_yields = [calculate_energy_yield(df, kpi_date, i) for i in range(1, 7)]
@@ -205,8 +205,6 @@ with col3:
                  labels={'x': 'Inverter', 'y': 'Energy Yield (kWh)'})
     fig.update_layout(title='مقایسه تولید انرژی بین اینورترها', height=300)
     st.plotly_chart(fig, use_container_width=True)
-
-
 
 
 ##############
