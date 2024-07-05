@@ -496,15 +496,15 @@ df_weather1 = load_weather1_data()
 
 def create_weather1_plot(variable, selected_date):
     if variable == 'Humidity':
-        # Group humidity data into ranges
-        bins = [0, 40, 50, 60, 70, 80, 90, 100]
-        labels = ['0-40%', '41-50%', '51-60%', '61-70%', '71-80%', '81-90%', '91-100%']
+        
+        bins = [0, 40, 50, 60, 70]
+        labels = ['0-40%', '41-50%', '51-60%', '61-70%',]
         df_weather1['Humidity_Range'] = pd.cut(df_weather1['Humidity'], bins=bins, labels=labels, include_lowest=True)
         
-        # Count occurrences in each range
+       
         humidity_counts = df_weather1['Humidity_Range'].value_counts().sort_index()
         
-        # Create pie chart
+        # pie chart
         fig = px.pie(values=humidity_counts.values, names=humidity_counts.index, title='Humidity Distribution')
         fig.update_traces(textposition='inside', textinfo='percent+label')
     else:
@@ -516,7 +516,7 @@ def create_weather1_plot(variable, selected_date):
 def create_weather1_settings(variable, key_prefix):
     with st.expander(f"تنظیمات ⚙️", expanded=False):
         st.markdown('<style>div[data-testid="stExpander"] div[role="button"] p {color: #0066cc;}</style>', unsafe_allow_html=True)
-    return None  # We don't need date selection for this dataset
+    return None  
 
 def create_weather1_plots(header, weather_variables):
     st.header(header)
