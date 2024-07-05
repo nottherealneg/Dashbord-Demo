@@ -237,13 +237,9 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
                         {'range': [80, 100], 'color': "lightblue"}],
                     'threshold' : {'line': {'color': "red", 'width': 4}, 'thickness': 0.75, 'value': 90}}))
             
-            # Create energy yield comparison bar chart
-            energy_yields = [calculate_energy_yield(df, selected_date, i) for i in range(1, 7)]
-            fig2 = px.bar(x=[f"Inverter {i}" for i in range(1, 7)], y=energy_yields,
-                          labels={'x': 'Inverter', 'y': 'Energy Yield (kWh)'})
-            fig2.update_layout(title='مقایسه تولید انرژی بین اینورترها', height=300)
             
-            return fig1, fig2
+            
+            return fig1
         elif variable in ['Eac', 'Eac Total']:
             # Bar plot for Eac and Eac Total
             fig = go.Figure(go.Bar(x=day_df['Hours'], y=day_df[column_name], 
@@ -311,7 +307,7 @@ def create_section_plots(header, variables):
             else:
                 st.warning(f"No data available for {variable}")
 
-create_section_plots("" , [ 'InvEfficient'])
+create_section_plots("بازده" , [ 'InvEfficient'])
 create_section_plots("انرژی ", ['Eac','Eac Total'])
 create_section_plots("توان", ['Pdc', 'Pac'])
 create_section_plots("جریان", ['Iac', 'Ipv'])
