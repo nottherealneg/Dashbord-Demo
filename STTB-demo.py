@@ -183,11 +183,21 @@ with col3:
     total_energy = sum(energy_yields)
     st.metric("Total Energy", f"{total_energy:.2f} kWh")
 
+#########
+
 st.markdown("مقایسه تولید انرژی بین اینورترها")
 energy_yields = [calculate_energy_yield(df, kpi_date, i) for i in range(1, 7)]
-fig = px.bar(x=[f"Inverter {i}" for i in range(1, 7)], y=energy_yields,
-             labels={'x': 'Inverter', 'y': 'Energy Yield (kWh)'})
-fig.update_layout(height=300)
+fig = go.Figure(data=go.Scatterpolar(
+  r=energy_yields + [energy_yields[0]],
+  theta=[f"Inverter {i}" for i in range(1, 7)] + ["Inverter 1"],
+  fill='toself'
+))
+fig.update_layout(
+  polar=dict(radialaxis=dict(visible=True)),
+  showlegend=False,
+  height=400,
+  title="Energy Yield Comparison"
+)
 st.plotly_chart(fig, use_container_width=True)
 
 ###################
@@ -201,6 +211,8 @@ def calculate_avg_eac_total(df, selected_date):
         avg = day_df[column_name].mean() if column_name in day_df.columns else 0
         avg_eac_total.append(avg)
     return avg_eac_total
+
+#############
 
 def create_plot(variable, selected_date, selected_inverter, selected_number=None):
 
