@@ -419,10 +419,24 @@ df_weather = load_weather_data()
 
 def create_weather_plot(variable, selected_date, selected_plant_id):
     day_df = df_weather[(df_weather['Date'] == selected_date) & (df_weather['PLANT_ID'] == selected_plant_id)]
-    fig = go.Figure(go.Scatter(x=day_df['DATE_TIME'], y=day_df[variable], name=variable))
+    
+    if variable == 'IRRADIATION':
+        fig = go.Figure(go.Area(
+            x=day_df['DATE_TIME'],
+            y=day_df[variable],
+            name=variable,
+            fillcolor='rgba(255, 165, 0, 0.5)',  # Light orange color
+            line=dict(color='rgb(255, 165, 0)')  # Darker orange for the line
+        ))
+    else:
+        fig = go.Figure(go.Scatter(
+            x=day_df['DATE_TIME'],
+            y=day_df[variable],
+            name=variable
+        ))
     
     y_axis_titles = {
-        'IRRADIATION': 'تابش',
+        'IRRADIATION': 'تابش (W/m²)',
         'AMBIENT_TEMPERATURE': '(°C) دمای محیط ',
         'MODULE_TEMPERATURE': '(°C) دمای ماژول'
     }
@@ -434,6 +448,19 @@ def create_weather_plot(variable, selected_date, selected_plant_id):
         height=400,
         margin=dict(l=50, r=50, t=50, b=50),
     )
+    
+    # Add shaded background for nighttime hours
+    fig.add_vrect(
+        x0=day_df['DATE_TIME'].dt.normalize(),
+        x1=day_df['DATE_TIME'].dt.normalize() + pd.Timedelta(hours=6),
+        fillcolor="LightGray", opacity=0.3, layer="below", line_width=0,
+    )
+    fig.add_vrect(
+        x0=day_df['DATE_TIME'].dt.normalize() + pd.Timedelta(hours=18),
+        x1=day_df['DATE_TIME'].dt.normalize() + pd.Timedelta(hours=24),
+        fillcolor="LightGray", opacity=0.3, layer="below", line_width=0,
+    )
+
     return fig
 
 def create_weather_settings(variable, key_prefix):
