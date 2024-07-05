@@ -499,8 +499,67 @@ create_weather_plots('تابش', ['IRRADIATION'])
 
 ####################
 
+@st.cache_data
+def load_weather1_data():
+    
+    
+    
+    df_weather1 = pd.read_excel('Data-weather1.xlsx')
+    df_weather1['DATE_TIME'] = pd.to_datetime(df_weather1['DATE_TIME'])
+    df_weather1['Date'] = df_weather1['DATE_TIME'].dt.date
+    
+    return df_weather1
+
+df_weather1 = load_weather1_data()
 
 
+def create_humidity_plot(selected_date):
+    day_df = df_weather1[df_weather1['Date'] == selected_date]
+    fig = go.Figure(go.Bar(x=day_df['Hours'], y=day_df['Humidity']))
+    fig.update_layout(
+        title='Humidity vs Hour',
+        xaxis_title="Hour",
+        yaxis_title="Humidity (%)",
+        height=400,
+        margin=dict(l=50, r=50, t=50, b=50),
+    )
+    return fig
+
+def create_wind_speed_plot(selected_date):
+    day_df = df_weather1[df_weather1['Date'] == selected_date]
+    fig = go.Figure(go.Scatter(x=day_df['Hours'], y=day_df['Wind Speed'], mode='lines+markers'))
+    fig.update_layout(
+        title='Wind Speed vs Hour',
+        xaxis_title="Hour",
+        yaxis_title="Wind Speed (m/s)",
+        height=400,
+        margin=dict(l=50, r=50, t=50, b=50),
+    )
+    return fig
+
+
+def create_weather1_settings(key_prefix):
+    with st.expander(f"تنظیمات ⚙️", expanded=False):
+        st.markdown('<style>div[data-testid="stExpander"] div[role="button"] p {color: #0066cc;}</style>', unsafe_allow_html=True)
+        selected_date = st.date_input('Date', min_value=df_weather1['Date'].min(), max_value=df_weather1['Date'].max(), value=df_weather1['Date'].min(), key=f'{key_prefix}_date')
+    return selected_date
+
+def create_weather1_plots():
+    
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        selected_date = create_weather1_settings('humidity')
+        fig_humidity = create_humidity_plot(selected_date)
+        st.plotly_chart(fig_humidity, use_container_width=True)
+    
+    with col2:
+        selected_date = create_weather1_settings('wind_speed')
+        fig_wind_speed = create_wind_speed_plot(selected_date)
+        st.plotly_chart(fig_wind_speed, use_container_width=True)
+
+create_weather1_plots()
 
 
 ###########################
