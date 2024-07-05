@@ -460,6 +460,8 @@ def create_weather_plots():
             else:
                 st.warning(f"No data available for {variable}")
 
+########################                
+
 create_weather_plots()
 create_section_plots("دمای اینورتر", ['Temp'])
 
