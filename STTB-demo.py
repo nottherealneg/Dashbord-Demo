@@ -489,7 +489,7 @@ def create_weather_plots(header, weather_variables):
 
 # ######
 
-create_section_plots("دمای اینورتر", ['temp'])
+create_section_plots("دمای اینورتر", ['Temp'])
 
 create_weather_plots('(°C) دمای ماژول', ['MODULE_TEMPERATURE'])
 create_weather_plots('(°C) دمای محیط ', ['AMBIENT_TEMPERATURE'])
