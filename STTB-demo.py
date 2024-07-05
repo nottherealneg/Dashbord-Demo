@@ -226,15 +226,14 @@ def create_energy_yield_chart(kpi_date, energy_yields):
 
 
 
-col1 = st.columns(1)
+st.header("مقایسه تولید انرژی")
+
+col1 = st.columns(1)[0]  
 
 with col1:
     energy_yields = [calculate_energy_yield(df, kpi_date, i) for i in range(1, 7)]
     fig_energy = create_energy_yield_chart(kpi_date, energy_yields)
     st.plotly_chart(fig_energy, use_container_width=True)
-
-
-    
 
 
 ###################
