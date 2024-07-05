@@ -124,6 +124,9 @@ def load_data():
 df = load_data()
 dates = df['Date'].unique()
 
+####################################
+
+
  #add logo
 logo = Image.open('logo.png')
 col1, col2 = st.columns([1, 3]) 
@@ -174,6 +177,8 @@ def calculate_energy_yield(df, date, inverter):
 
 # KPI Section
 st.header("شاخص های کلیدی عملکرد")
+# Date selection for KPIs
+kpi_date = st.date_input('تاریخ برای محاسبه شاخص ها', min_value=dates.min(), max_value=dates.max(), value=dates[0])
 
 col1, col2, col3 = st.columns(3)
 
