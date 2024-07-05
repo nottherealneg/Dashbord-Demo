@@ -417,23 +417,11 @@ def load_weather_data():
 
 df_weather = load_weather_data()
 
+import plotly.express as px
+import plotly.graph_objects as go
+
 def create_weather_plot(variable, selected_date, selected_plant_id):
     day_df = df_weather[(df_weather['Date'] == selected_date) & (df_weather['PLANT_ID'] == selected_plant_id)]
-    
-    if variable == 'IRRADIATION':
-        fig = px.area(
-            x=day_df['DATE_TIME'],
-            y=day_df[variable],
-            name=variable,
-            fillcolor='rgba(255, 165, 0, 0.5)',  
-            line=dict(color='rgb(255, 165, 0)')  
-        )
-    else:
-        fig = go.Figure(go.Scatter(
-            x=day_df['DATE_TIME'],
-            y=day_df[variable],
-            name=variable
-        ))
     
     y_axis_titles = {
         'IRRADIATION': 'تابش (W/m²)',
@@ -442,9 +430,17 @@ def create_weather_plot(variable, selected_date, selected_plant_id):
     }
     y_axis_title = y_axis_titles.get(variable, variable)
     
+    if variable == 'IRRADIATION':
+        fig = px.area(day_df, x='DATE_TIME', y=variable, 
+                      title=f"{variable} on {selected_date}",
+                      labels={'DATE_TIME': 'زمان', variable: y_axis_title})
+        fig.update_traces(fillcolor='rgba(255, 165, 0, 0.5)', line_color='rgb(255, 165, 0)')
+    else:
+        fig = px.line(day_df, x='DATE_TIME', y=variable, 
+                      title=f"{variable} on {selected_date}",
+                      labels={'DATE_TIME': 'زمان', variable: y_axis_title})
+    
     fig.update_layout(
-        xaxis_title="زمان",
-        yaxis_title=y_axis_title,
         height=400,
         margin=dict(l=50, r=50, t=50, b=50),
     )
