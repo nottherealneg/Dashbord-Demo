@@ -280,7 +280,7 @@ def create_settings(variable, key_prefix):
         if variable == 'Eac Total':
             min_year = df['TIMESTAMP'].dt.year.min()
             max_year = df['TIMESTAMP'].dt.year.max()
-            selected_year = st.selectbox('تازیخ', range(min_year, max_year + 1), key=f'{key_prefix}_date')
+            selected_year = st.selectbox('تاریخ', range(min_year, max_year + 1), key=f'{key_prefix}_date')
             return None, None, None, selected_year
         
         selected_date = st.date_input('تاریخ', min_value=dates.min(), max_value=dates.max(), value=dates[0], key=f'{key_prefix}_date')
