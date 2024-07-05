@@ -281,22 +281,22 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
 def create_settings(variable, key_prefix):
     with st.expander(f" تنظیمات ⚙️", expanded=False):
         st.markdown('<style>div[data-testid="stExpander"] div[role="button"] p {color: #0066cc;}</style>', unsafe_allow_html=True)
-        if variable == 'Eac Total':
-            min_year = df['TIMESTAMP'].dt.year.min()
-            max_year = df['TIMESTAMP'].dt.year.max()
-            selected_year = st.selectbox('تاریخ', range(min_year, max_year + 1), key=f'{key_prefix}_date')
-            return None, None, None, selected_year
-        
         selected_date = st.date_input('تاریخ', min_value=dates.min(), max_value=dates.max(), value=dates[0], key=f'{key_prefix}_date')
-        selected_inverter = st.selectbox(f'شماره اینورتر', range(1, 7), key=f'{key_prefix}_inverter')
-        if variable in ['Iac', 'Ipv', 'Uac', 'Upv']:
-            num_options = 3 if variable in ['Iac', 'Uac'] else 4
-            selected_number = st.selectbox(f'{variable.split()[-1] if "V" in variable else variable} شماره', 
-                                           range(1, num_options + 1), 
-                                           key=f'{key_prefix}_شماره')
+        
+        if variable != 'Eac Total':
+            selected_inverter = st.selectbox(f'شماره اینورتر', range(1, 7), key=f'{key_prefix}_inverter')
+            if variable in ['Iac', 'Ipv', 'Uac', 'Upv']:
+                num_options = 3 if variable in ['Iac', 'Uac'] else 4
+                selected_number = st.selectbox(f'{variable.split()[-1] if "V" in variable else variable} شماره', 
+                                               range(1, num_options + 1), 
+                                               key=f'{key_prefix}_شماره')
+            else:
+                selected_number = None
         else:
+            selected_inverter = None
             selected_number = None
-    return selected_date, selected_inverter, selected_number, None
+        
+    return selected_date, selected_inverter, selected_number
 
 #######
 def create_section_plots(header, variables):
