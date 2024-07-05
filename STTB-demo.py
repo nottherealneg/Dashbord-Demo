@@ -193,6 +193,7 @@ st.plotly_chart(fig, use_container_width=True)
 ###################
 
 def calculate_avg_eac_total(df, selected_date):
+    
     day_df = df[df['Date'] == selected_date]
     avg_eac_total = []
     for inverter in range(1, 7):
@@ -202,7 +203,7 @@ def calculate_avg_eac_total(df, selected_date):
     return avg_eac_total
 
 def create_plot(variable, selected_date, selected_inverter, selected_number=None):
-    
+
     if variable == 'Eac Total' and selected_date:
         avg_eac_total = calculate_avg_eac_total(df, selected_date)
         fig = go.Figure(go.Scatter(
