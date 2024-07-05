@@ -485,7 +485,8 @@ create_weather_plots('تابش', ['IRRADIATION'])
 
 
 
-####################
+#################### weather1
+
 
 @st.cache_data
 def load_weather1_data():
@@ -497,54 +498,45 @@ def load_weather1_data():
 
 df_weather1 = load_weather1_data()
 
-
-def create_humidity_plot(selected_date):
-    day_df = df_weather1[df_weather1['Date'] == selected_date]
-    fig = go.Figure(go.Bar(x=day_df['Hours'], y=day_df['Humidity']))
-    fig.update_layout(
+#########
+def create_weather1_plot(variable, selected_date):
+    day_df = df_weather1[(df_weather1['Date'] == selected_date)]
+    fig = px.area(x=day_df['Date'], y=day_df[variable])
+    
+    y_axis_titles = {
+        'Humidity': 'رطوبت (%)',
+        'Wind Speed': '(m/s) سرعت باد ',
         
+    }
+    y_axis_title = y_axis_titles.get(variable, variable)
+    
+    fig.update_layout(
         xaxis_title="زمان",
-        yaxis_title="رطوبت (%)",
+        yaxis_title=y_axis_title,
         height=400,
         margin=dict(l=50, r=50, t=50, b=50),
     )
     return fig
 
-def create_wind_speed_plot(selected_date):
-    day_df = df_weather1[df_weather1['Date'] == selected_date]
-    fig = go.Figure(go.Scatter(x=day_df['Hours'], y=day_df['Wind Speed'], mode='lines+markers'))
-    fig.update_layout(
-        
-        xaxis_title="زمان",
-        yaxis_title=" (m/s) سرعت باد ",
-        height=400,
-        margin=dict(l=50, r=50, t=50, b=50),
-    )
-    return fig
-
-
-def create_weather1_settings(key_prefix):
+def create_weather1_settings(variable, key_prefix):
     with st.expander(f"تنظیمات ⚙️", expanded=False):
         st.markdown('<style>div[data-testid="stExpander"] div[role="button"] p {color: #0066cc;}</style>', unsafe_allow_html=True)
         selected_date = st.date_input('Date', min_value=df_weather1['Date'].min(), max_value=df_weather1['Date'].max(), value=df_weather1['Date'].min(), key=f'{key_prefix}_date')
+        
     return selected_date
 
-def create_weather1_plots():
-    
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        selected_date = create_weather1_settings('humidity')
-        fig_humidity = create_humidity_plot(selected_date)
-        st.plotly_chart(fig_humidity, use_container_width=True)
-    
-    with col2:
-        selected_date = create_weather1_settings('wind_speed')
-        fig_wind_speed = create_wind_speed_plot(selected_date)
-        st.plotly_chart(fig_wind_speed, use_container_width=True)
-
-create_weather1_plots()
+def create_weather1_plots(header, weather_variables):
+    st.header(header)
+    cols = st.columns(len(weather_variables))
+    for i, variable in enumerate(weather_variables):
+        with cols[i]:
+            selected_date = create_weather_settings(variable, f'weather_{variable}')
+            fig = create_weather_plot(variable, selected_date)
+            if fig is not None:
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.warning(f"No data available for {variable}")
+create_weather1_plots('nxmfj', ['Humidity'])
 
 ###########################
 # Data information
