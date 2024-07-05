@@ -200,8 +200,9 @@ def calculate_avg_eac_total(df, year):
     return avg_eac_total
 
 def create_plot(variable, selected_date, selected_inverter, selected_number=None, selected_year=None):
-    if variable == 'Eac Total' and selected_year:
-        avg_eac_total = calculate_avg_eac_total(df, selected_year)
+    if variable == 'Eac Total' and selected_date:
+
+        avg_eac_total = calculate_avg_eac_total(df, selected_date)
         fig = go.Figure(go.Scatter(
             x=list(range(1, 7)),
             y=avg_eac_total,
@@ -210,8 +211,8 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
         ))
         fig.update_layout(
             title=f'Average Eac Total {selected_year}',
-            xaxis_title="Inverter",
-            yaxis_title="Average Eac Total (kWh)",
+            xaxis_title="اینورتر",
+            yaxis_title=" (kWh)  میانگین انرژی کل ",
             xaxis=dict(tickmode='linear', tick0=1, dtick=1),
             height=400,
             margin=dict(l=50, r=50, t=50, b=50),
