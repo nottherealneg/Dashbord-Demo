@@ -277,15 +277,15 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
 def create_settings(variable, key_prefix):
     # Dictionary for Persian translations
     persian_names = {
-        'Iac': "(A) AC جریان ",
-        'Pdc': "(kW) DC توان ",
-        'Pac': "(kW) AC توان",
-        'Ipv': "(A) DC جریان ",
-        'Uac': "(V) AC ولتاژ ",
-        'Upv': "(V) DC ولتاژ ",
-        'Eac': '(kWh)انرژی ',
-        'Eac Total': '(kWh)کل انرژی ',
-        'InvEfficient': '(%)کارایی اینورتر '
+        'Iac': "AC جریان",
+        'Pdc': "DC توان",
+        'Pac': "AC توان",
+        'Ipv': "DC جریان",
+        'Uac': "AC ولتاژ",
+        'Upv': "DC ولتاژ",
+        'Eac': 'انرژی',
+        'Eac Total': 'کل انرژی',
+        'InvEfficient': 'کارایی اینورتر'
     }
 
     # Use the Persian name if available, otherwise use the original variable name
