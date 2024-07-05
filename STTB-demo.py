@@ -17,7 +17,7 @@ st.markdown("""
 <style>
 .custom-title {
     font-family: 'Abjad', 'Arial', sans-serif !important;
-    font-size: 50px !important;
+    font-size: 40px !important;
     font-weight: bold !important;
     color: white !important;
     text-align: center !important;
