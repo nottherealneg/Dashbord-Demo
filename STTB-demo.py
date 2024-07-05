@@ -56,7 +56,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("*خوش آمدید*")
+
 
 ######sign in
 
@@ -72,6 +72,7 @@ def logout():
 
 # Sidebar
 with st.sidebar:
+    st.markdown("*خوش آمدید*")
     if not st.session_state.logged_in:
         st.markdown('## ورود به سیستم')
         username = st.text_input('نام کاربری')
@@ -84,7 +85,7 @@ with st.sidebar:
             else:
                 st.error('نام کاربری یا رمز عبور اشتباه است')
     else:
-        st.markdown('## خوش آمدید')
+        
         st.markdown(f'کاربر: {username}')
         if st.button('خروج'):
             logout()
@@ -99,11 +100,9 @@ with st.sidebar:
 # Main content
 if st.session_state.logged_in:
     st.write('شما وارد شده‌اید. محتوای اصلی اینجا نمایش داده می‌شود.')
-    # main app content 
+   
 else:
-    st.write('لطفا برای دسترسی به محتوا وارد شوید.')
-
-
+    st.write('لطفا برای دسترسی به محتوا وارد شوید')
 
 #################################### chatbot
 #messages = st.container(height=500,border=True)
