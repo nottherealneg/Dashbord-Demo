@@ -56,8 +56,10 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+st.markdown("*خوش آمدید*")
+
 ######sign in
-###### sidebar
+
 # Initialize session state variables
 if 'logged_in' not in st.session_state:
     st.session_state.logged_in = False
@@ -75,8 +77,7 @@ with st.sidebar:
         username = st.text_input('نام کاربری')
         password = st.text_input('رمز عبور', type='password')
         if st.button('ورود'):
-            # Here you should implement proper authentication
-            # This is a simple example and is not secure
+            # authentication
             if username == 'admin' and password == 'password':
                 login()
                 st.experimental_rerun()
@@ -89,8 +90,8 @@ with st.sidebar:
             logout()
             st.experimental_rerun()
 
-    # Rest of your sidebar content
-    st.markdown(' خوش آمدید' )
+    #
+    
     home = st.button("  🏠 خانه ")
     dashboard = st.button("📊 داشبورد")
     settings = st.button("⚙️ تنظیمات")
@@ -98,18 +99,11 @@ with st.sidebar:
 # Main content
 if st.session_state.logged_in:
     st.write('شما وارد شده‌اید. محتوای اصلی اینجا نمایش داده می‌شود.')
-    # Your main app content goes here
+    # main app content 
 else:
     st.write('لطفا برای دسترسی به محتوا وارد شوید.')
 
 
-#########
-#with st.sidebar:
-
-    #st.markdown(' خوش آمدید' )
-    #home = st.button("  🏠 خانه ")
-    #dashboard = st.button("📊 داشبورد")
-    #settings = st.button("⚙️ تنظیمات")
 
 #################################### chatbot
 #messages = st.container(height=500,border=True)
