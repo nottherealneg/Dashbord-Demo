@@ -64,11 +64,13 @@ with st.sidebar:
     dashboard = st.button("📊 داشبورد")
     settings = st.button("⚙️ تنظیمات")
 
-#################################### chatbot 
-messages = st.container(height=100)
-if prompt := st.chat_input(" سلام ، خوش آمدید "):
+#################################### chatbot
+    messages = st.container(height=200)
+    if prompt := st.chat_input(" سلام ، خوش آمدید 🤖"):
         messages.chat_message("کاربر میهمان").write(prompt)
         messages.chat_message("دستیار").write(f"🤖: {prompt}")
+
+
 
 
 
