@@ -311,8 +311,8 @@ def create_section_plots(header, variables):
             else:
                 st.warning(f"No data available for {variable}")
 
-create_section_plots("" , [ 'InvEfficient','Eac Total'])
-create_section_plots("انرژی ", ['Eac'])
+create_section_plots("" , [ 'InvEfficient'])
+create_section_plots("انرژی ", ['Eac','Eac Total'])
 create_section_plots("توان", ['Pdc', 'Pac'])
 create_section_plots("جریان", ['Iac', 'Ipv'])
 create_section_plots("ولتاژ", ['Uac', 'Upv'])
