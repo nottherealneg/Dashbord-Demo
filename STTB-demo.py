@@ -195,16 +195,11 @@ with col2:
     st.metric("Avg Utilization", f"{avg_utilization:.2f}%")
 
 with col3:
-    st.subheader("مقایسه تولید انرژی")
+    st.subheader(" تولید انرژی کل")
     energy_yields = [calculate_energy_yield(df, kpi_date, i) for i in range(1, 7)]
     total_energy = sum(energy_yields)
     st.metric("Total Energy", f"{total_energy:.2f} kWh")
     
-    # Create a bar chart for energy yield comparison
-    fig = px.bar(x=[f"Inverter {i}" for i in range(1, 7)], y=energy_yields,
-                 labels={'x': 'Inverter', 'y': 'Energy Yield (kWh)'})
-    fig.update_layout(title='مقایسه تولید انرژی بین اینورترها', height=300)
-    st.plotly_chart(fig, use_container_width=True)
 
 
 ###############
