@@ -74,7 +74,7 @@ def logout():
 with st.sidebar:
     st.markdown("**خوش آمدید**")
     if not st.session_state.logged_in:
-        st.markdown('## ورود به سیستم')
+        st.markdown('# ورود به سیستم')
         username = st.text_input('نام کاربری')
         password = st.text_input('رمز عبور', type='password')
         if st.button('ورود'):
