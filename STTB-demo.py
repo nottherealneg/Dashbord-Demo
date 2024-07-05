@@ -418,34 +418,23 @@ def load_weather_data():
 
 df_weather = load_weather_data()
 
-
-
 def create_weather_plot(variable, selected_date, selected_plant_id):
     day_df = df_weather[(df_weather['Date'] == selected_date) & (df_weather['PLANT_ID'] == selected_plant_id)]
     
-    if variable == 'IRRADIATION':
-        fig = px.density_scatter(day_df, x='Hours', y=variable,
-                                 labels={'Hours': 'Hours', variable: 'Irradiation'},
-                                 color_continuous_scale='YlOrRd',
-                                 title=f'Irradiation Density for Plant ID {selected_plant_id} on {selected_date}')
-        fig.update_traces(marker=dict(size=8))
-    else:
-        fig = go.Figure(go.Scatter(x=day_df['Hours'], y=day_df[variable], mode='lines+markers', name=variable))
-        
-        y_axis_titles = {
-            'AMBIENT_TEMPERATURE': 'Ambient Temperature (°C)',
-            'MODULE_TEMPERATURE': 'Module Temperature (°C)'
-        }
-        
-        y_axis_title = y_axis_titles.get(variable, variable)
-        
-        fig.update_layout(
-            title=f'{variable} for Plant ID {selected_plant_id} on {selected_date}',
-            xaxis_title="Hours",
-            yaxis_title=y_axis_title,
-        )
+    fig = go.Figure(go.Scatter(x=day_df['Hours'], y=day_df[variable], name=variable))
+    
+    y_axis_titles = {
+        'IRRADIATION': 'Irradiation',
+        'AMBIENT_TEMPERATURE': 'Ambient Temperature (°C)',
+        'MODULE_TEMPERATURE': 'Module Temperature (°C)'
+    }
+    
+    y_axis_title = y_axis_titles.get(variable, variable)
     
     fig.update_layout(
+        title=f'{variable} for Plant ID {selected_plant_id} on {selected_date}',
+        xaxis_title="Hours",
+        yaxis_title=y_axis_title,
         height=400,
         margin=dict(l=50, r=50, t=50, b=50),
     )
@@ -457,7 +446,6 @@ def create_weather_settings(variable, key_prefix):
         selected_date = st.date_input('Date', min_value=df_weather['Date'].min(), max_value=df_weather['Date'].max(), value=df_weather['Date'].min(), key=f'{key_prefix}_date')
         selected_plant_id = st.selectbox('Plant ID', df_weather['PLANT_ID'].unique(), key=f'{key_prefix}_plant_id')
     return selected_date, selected_plant_id
-
 
 def create_weather_plots():
     st.header("Weather Data")
