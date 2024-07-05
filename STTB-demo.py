@@ -417,18 +417,6 @@ def load_weather_data():
 
 df_weather = load_weather_data()
 
-import plotly.express as px
-import plotly.graph_objects as go
-
-@st.cache_data
-def load_weather_data():
-    df_weather = pd.read_excel('Data-weather2.xlsx')
-    df_weather['DATE_TIME'] = pd.to_datetime(df_weather['DATE_TIME'])
-    df_weather['Date'] = df_weather['DATE_TIME'].dt.date
-    return df_weather
-
-df_weather = load_weather_data()
-
 def create_weather_plot(variable, selected_date, selected_plant_id):
     day_df = df_weather[(df_weather['Date'] == selected_date) & (df_weather['PLANT_ID'] == selected_plant_id)]
     fig = px.area(x=day_df['DATE_TIME'], y=day_df[variable])
