@@ -189,7 +189,7 @@ st.markdown("مقایسه تولید انرژی بین اینورترها")
 energy_yields = [calculate_energy_yield(df, kpi_date, i) for i in range(1, 7)]
 
 # Generate a rainbow color scale
-colors = px.colors.sequential.virids
+colors = px.colors.sequential.viridis
 
 color_scale = [colors[i] for i in range(0, len(colors), len(colors)//6)][:6]
 
