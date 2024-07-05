@@ -184,6 +184,9 @@ with col3:
     st.metric("Total Energy", f"{total_energy:.2f} kWh")
 
 ########
+import plotly.graph_objects as go
+import plotly.express as px
+
 st.markdown("مقایسه تولید انرژی بین اینورترها")
 energy_yields = [calculate_energy_yield(df, kpi_date, i) for i in range(1, 7)]
 
@@ -191,36 +194,39 @@ energy_yields = [calculate_energy_yield(df, kpi_date, i) for i in range(1, 7)]
 colors = px.colors.sequential.Rainbow
 color_scale = [colors[i] for i in range(0, len(colors), len(colors)//6)][:6]
 
+# Create the horizontal bar chart
 fig = go.Figure()
 
-fig.add_trace(go.Scatterpolar(
-    r=energy_yields + [energy_yields[0]],
-    theta=[f"Inverter {i}" for i in range(1, 7)] + ["Inverter 1"],
-    fill='toself',
-    line=dict(color='rgba(255,255,255,0)'),  # Transparent line
-    fillcolor='rgba(255,255,255,0.1)'  # Very light fill for the entire area
-))
-
-for i in range(6):
-    fig.add_trace(go.Scatterpolar(
-        r=[0] * i + [energy_yields[i]] + [0] * (6-i),
-        theta=[f"Inverter {j}" for j in range(1, 8)],
-        fill='toself',
-        fillcolor=color_scale[i],
-        line=dict(color=color_scale[i]),
+for i, yield_value in enumerate(energy_yields):
+    fig.add_trace(go.Bar(
+        y=[f"Inverter {i+1}"],
+        x=[yield_value],
+        orientation='h',
+        marker=dict(color=color_scale[i]),
         name=f"Inverter {i+1}"
     ))
 
 fig.update_layout(
-    polar=dict(
-        radialaxis=dict(visible=True, range=[0, max(energy_yields)*1.1]),
-        angularaxis=dict(direction="clockwise")
-    ),
-    showlegend=True,
-    legend=dict(orientation="h", yanchor="bottom", y=1.1, xanchor="center", x=0.5),
-    height=500,
-    title="Energy Yield Comparison (Rainbow)"
+    title="Energy Yield Comparison",
+    xaxis_title="Energy Yield (kWh)",
+    yaxis_title="Inverters",
+    height=400,
+    barmode='stack',
+    showlegend=False,
+    xaxis=dict(range=[0, max(energy_yields) * 1.1])  # Set x-axis range with 10% padding
 )
+
+# Add value labels to the end of each bar
+for i, yield_value in enumerate(energy_yields):
+    fig.add_annotation(
+        x=yield_value,
+        y=i,
+        text=f"{yield_value:.2f} kWh",
+        showarrow=False,
+        xanchor='left',
+        xshift=10,
+        font=dict(color="white")
+    )
 
 st.plotly_chart(fig, use_container_width=True)
 ###################
