@@ -134,7 +134,7 @@ with col1:
 with col2:
     st.markdown('<p class="custom-title">مانیتورینگ هوشمند شرکت سـولار تابش توان بین الملل</p>', unsafe_allow_html=True) 
 
-
+#vars
 def get_column_name(variable, number=None, inverter=None):
     if variable in ['Iac', 'Ipv']:
         return f'{variable}{number}(A)_inv_{inverter}'
@@ -164,12 +164,12 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
         
         # Define y-axis title based on variable
         y_axis_titles = {
-            'Iac': "AC جریان ",
-            'Pdc': "DC توان ",
-            'Pac': "AC توان",
-            'Ipv': "DC جریان ",
-            'Uac': "AC ولتاژ ",
-            'Upv': "DC ولتاژ ",
+            'Iac': "(A) AC جریان ",
+            'Pdc': "(kW) DC توان ",
+            'Pac': "(kW) AC توان",
+            'Ipv': "(A) DC جریان ",
+            'Uac': "(V) AC ولتاژ ",
+            'Upv': "(V) DC ولتاژ ",
             'Eac': '(kWh)انرژی '
         }
         
