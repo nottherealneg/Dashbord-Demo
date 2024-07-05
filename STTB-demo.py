@@ -183,14 +183,46 @@ with col3:
     total_energy = sum(energy_yields)
     st.metric("Total Energy", f"{total_energy:.2f} kWh")
 
+########
 st.markdown("مقایسه تولید انرژی بین اینورترها")
 energy_yields = [calculate_energy_yield(df, kpi_date, i) for i in range(1, 7)]
-fig = px.bar(x=energy_yields, y=[f"Inverter {i}" for i in range(1, 7)],
-             labels={'x': 'Energy Yield (kWh)', 'y': 'Inverter'},
-             orientation='h')
-fig.update_layout(height=400, title="Energy Yield Comparison")
-st.plotly_chart(fig, use_container_width=True)
 
+# Generate a rainbow color scale
+colors = px.colors.sequential.Rainbow
+color_scale = [colors[i] for i in range(0, len(colors), len(colors)//6)][:6]
+
+fig = go.Figure()
+
+fig.add_trace(go.Scatterpolar(
+    r=energy_yields + [energy_yields[0]],
+    theta=[f"Inverter {i}" for i in range(1, 7)] + ["Inverter 1"],
+    fill='toself',
+    line=dict(color='rgba(255,255,255,0)'),  # Transparent line
+    fillcolor='rgba(255,255,255,0.1)'  # Very light fill for the entire area
+))
+
+for i in range(6):
+    fig.add_trace(go.Scatterpolar(
+        r=[0] * i + [energy_yields[i]] + [0] * (6-i),
+        theta=[f"Inverter {j}" for j in range(1, 8)],
+        fill='toself',
+        fillcolor=color_scale[i],
+        line=dict(color=color_scale[i]),
+        name=f"Inverter {i+1}"
+    ))
+
+fig.update_layout(
+    polar=dict(
+        radialaxis=dict(visible=True, range=[0, max(energy_yields)*1.1]),
+        angularaxis=dict(direction="clockwise")
+    ),
+    showlegend=True,
+    legend=dict(orientation="h", yanchor="bottom", y=1.1, xanchor="center", x=0.5),
+    height=500,
+    title="Energy Yield Comparison (Rainbow)"
+)
+
+st.plotly_chart(fig, use_container_width=True)
 ###################
 
 def calculate_avg_eac_total(df, selected_date):
