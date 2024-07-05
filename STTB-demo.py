@@ -183,10 +183,30 @@ with col3:
     total_energy = sum(energy_yields)
     st.metric("Total Energy", f"{total_energy:.2f} kWh")
 
-#########
-
 st.markdown("مقایسه تولید انرژی بین اینورترها")
 energy_yields = [calculate_energy_yield(df, kpi_date, i) for i in range(1, 7)]
+<<<<<<< HEAD
+average_yield = sum(energy_yields) / len(energy_yields)
+
+fig = go.Figure()
+for i, yield_value in enumerate(energy_yields, 1):
+    fig.add_trace(go.Indicator(
+        mode = "number+gauge+delta", value = yield_value,
+        domain = {'x': [0, 1], 'y': [i/7, (i+0.9)/7]},
+        title = {'text': f"Inverter {i}"},
+        delta = {'reference': average_yield},
+        gauge = {
+            'axis': {'range': [0, max(energy_yields)*1.2]},
+            'bar': {'color': "darkblue"},
+            'threshold': {
+                'line': {'color': "red", 'width': 2},
+                'thickness': 0.75,
+                'value': average_yield
+            }
+        }))
+
+fig.update_layout(height=600, title_text="Energy Yield Comparison (kWh)")
+=======
 fig = go.Figure(data=go.Scatterpolar(
   r=energy_yields + [energy_yields[0]],
   theta=[f"Inverter {i}" for i in range(1, 7)] + ["Inverter 1"],
@@ -198,6 +218,7 @@ fig.update_layout(
   height=400,
   title="Energy Yield Comparison"
 )
+>>>>>>> 8e8aca3abf1581b01a40a69f37ac22e417516116
 st.plotly_chart(fig, use_container_width=True)
 
 ###################
