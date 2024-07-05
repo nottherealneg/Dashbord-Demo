@@ -184,9 +184,6 @@ with col3:
     st.metric("Total Energy", f"{total_energy:.2f} kWh")
 
 ########
-import plotly.graph_objects as go
-import plotly.express as px
-
 st.markdown("مقایسه تولید انرژی بین اینورترها")
 energy_yields = [calculate_energy_yield(df, kpi_date, i) for i in range(1, 7)]
 
