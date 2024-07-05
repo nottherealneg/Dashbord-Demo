@@ -68,7 +68,7 @@ with st.sidebar:
 
 #################################### chatbot 
 with st.sidebar:
-    messages = st.container(height=300)
+    messages = st.container(height=100)
     if prompt := st.chat_input(" سلام ، خوش آمدید "):
         messages.chat_message("کاربر میهمان").write(prompt)
         messages.chat_message("دستیار").write(f"🤖: {prompt}")
