@@ -33,6 +33,8 @@ st.markdown("""
 """, unsafe_allow_html=True)
 ####################
 
+####################
+
 # Add background
 def bg(image_file):
     with open(image_file, "rb") as image_file:
@@ -77,9 +79,10 @@ def logout():
 
 
 with st.sidebar:
-    st.markdown("#  خوش آمدید")
+    st.markdown("# خوش آمدید")
+
     if not st.session_state.logged_in:
-        st.markdown(' ورود به سیستم')
+        st.markdown("# ورود به سیستم")
         username = st.text_input('نام کاربری')
         password = st.text_input('رمز عبور', type='password')
         if st.button('ورود'):
@@ -189,12 +192,12 @@ kpi_date = st.date_input('انتخاب تاریخ جهت محاسبه شاخص �
 
 col1, col2, col3 = st.columns(3)
 with col1:
-    st.subheader("حداکثر توان روزانه")
+    st.subheader("حداکثر  توان  روزانه")
     peak_power = max(calculate_daily_peak_power(df, kpi_date, i) for i in range(1, 7))
     st.metric("Peak Power", f"{peak_power:.2f} kW")
 
 with col2:
-    st.subheader("متوسط ظرفیت بهره برداری ")
+    st.subheader("متوسط  ظرفیت  بهره  برداری ")
     rated_capacity = 80  # Assuming 80kW rated capacity for each inverter
     avg_utilization = sum(calculate_capacity_utilization(df, kpi_date, i, rated_capacity) for i in range(1, 7)) / 6
     st.metric("Avg Utilization", f"{avg_utilization:.2f}%")
@@ -208,6 +211,7 @@ with col3:
 ########
 
 def create_energy_yield_chart(kpi_date, energy_yields):
+
     colors = px.colors.sequential.YlGn
     color_scale = [colors[i] for i in range(0, len(colors), len(colors)//6)][:6]
 
@@ -271,19 +275,19 @@ def calculate_avg_eac_total(df, selected_date):
 
 #############
 def create_plot(variable, selected_date, selected_inverter, selected_number=None):
+
     if variable == 'Eac Total' and selected_date:
         avg_eac_total = calculate_avg_eac_total(df, selected_date)
-        fig = go.Figure(go.Scatter(
-            x=list(range(1, 7)),
+        
+        fig = go.Figure()
+        fig.add_trace(go.Bar(
+            x=[f"اینورتر {i}" for i in range(1, 7)],
             y=avg_eac_total,
-            mode='lines+markers',
-            name='Avg Eac Total'
+            marker_color='lightblue'
         ))
         fig.update_layout(
-            title=f'Average Eac Total for {selected_date}',
             xaxis_title="اینورتر",
-            yaxis_title=" (kWh) میانگین انرژی کل ",
-            xaxis=dict(tickmode='linear', tick0=1, dtick=1),
+            yaxis_title="(kWh) میانگین انرژی کل",
             height=400,
             margin=dict(l=50, r=50, t=50, b=50),
         )
@@ -305,11 +309,11 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
                 x=day_df['Hours'],
                 y=[f'Inverter {i}' for i in inverters],
                 colorscale='YlOrRd',
-                colorbar=dict(title='Temperature (°C)')
+                colorbar=dict(title=' (°C) دما ')
             ))
             fig.update_layout(
                 title=f'{selected_date}',
-                xaxis_title="زمان",
+                xaxis_title="(h) زمان",
                 yaxis_title="اینورتر",
                 height=500,
                 margin=dict(l=50, r=50, t=50, b=50),
@@ -343,7 +347,7 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
                     'threshold' : {'line': {'color': "orange", 'width': 4}, 'thickness': 0.75, 'value': 90}}))
             fig.update_layout(height=400)
         elif variable in ['Eac', 'Eac Total']:
-            fig = go.Figure(go.Scatter(x=day_df['Hours'], y=day_df[column_name], name=f'{variable} (Inverter {selected_inverter})'))
+            fig = go.Figure(go.Scatter(x=day_df[column_name], y=day_df['Hours'], name=f'{variable} (Inverter {selected_inverter})'))
         else:
             fig = go.Figure(go.Scatter(x=day_df['Hours'], y=day_df[column_name], name=f'{variable} (Inverter {selected_inverter})'))
         
@@ -365,7 +369,7 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
         if variable != 'InvEfficient':
             fig.update_layout(
                 title=f'inverter {selected_inverter}' + (f' - {variable}{selected_number}' if selected_number else ''),
-                xaxis_title="زمان",
+                xaxis_title="(h) زمان",
                 yaxis_title=y_axis_title,
                 height=400,
                 margin=dict(l=50, r=50, t=50, b=50),
@@ -426,9 +430,22 @@ def load_weather_data():
 
 df_weather = load_weather_data()
 
+######
+
 def create_weather_plot(variable, selected_date, selected_plant_id):
     day_df = df_weather[(df_weather['Date'] == selected_date) & (df_weather['PLANT_ID'] == selected_plant_id)]
-    fig = px.area(x=day_df['DATE_TIME'], y=day_df[variable])
+    
+    color_map = {
+        'AMBIENT_TEMPERATURE': 'rgba(255,165,0,0.55)',  # Orange with 50% opacity
+        'MODULE_TEMPERATURE': 'rgba(255,255,0,0.5)',     # yellow with 50% opacity
+        'IRRADIATION': 'rgba(255,0,0,0.3)'           # red with 50% opacity   
+    }
+    
+    fig = px.area(
+        x=day_df['DATE_TIME'], 
+        y=day_df[variable],
+        color_discrete_sequence=[color_map.get(variable, 'rgba(0,0,255,0.5)')]  # Default to blue 
+    )
     
     y_axis_titles = {
         'IRRADIATION': 'تابش',
@@ -438,13 +455,21 @@ def create_weather_plot(variable, selected_date, selected_plant_id):
     y_axis_title = y_axis_titles.get(variable, variable)
     
     fig.update_layout(
-        xaxis_title="زمان",
+        xaxis_title="(h) زمان",
         yaxis_title=y_axis_title,
         height=400,
         margin=dict(l=50, r=50, t=50, b=50),
     )
+    
+   
+    fig.update_traces(fillcolor=color_map.get(variable, 'rgba(0,0,255,0.5)'))
+    
     return fig
 
+
+
+
+#################
 def create_weather_settings(variable, key_prefix):
     with st.expander(f"تنظیمات ⚙️", expanded=False):
         st.markdown('<style>div[data-testid="stExpander"] div[role="button"] p {color: #0066cc;}</style>', unsafe_allow_html=True)
@@ -512,17 +537,8 @@ def create_weather1_plot(variable, selected_date):
         humidity_counts = day_df['Humidity_Range'].value_counts().sort_index()
         fig = px.pie(values=humidity_counts.values, names=humidity_counts.index, title='Humidity Distribution')
         fig.update_traces(textposition='inside', textinfo='percent+label')
-    else:
-        fig = px.area(day_df, x='Hours', y=variable)
-        y_axis_title = '(m/s) سرعت باد ' if variable == 'Wind Speed' else variable
-        fig.update_layout(
-            xaxis_title="زمان",
-            yaxis_title=y_axis_title,
-        )
-    fig.update_layout(
-        height=400,
-        margin=dict(l=50, r=50, t=50, b=50),
-    )
+    
+   
     return fig
 
 def create_weather1_settings(variable, key_prefix):
@@ -544,7 +560,7 @@ def create_weather1_plots(header, weather_variables):
                 st.warning(f"No data available for {variable}")
 
 create_weather1_plots('نمودار رطوبت', ['Humidity'])
-create_weather1_plots('نمودار سرعت باد', ['Wind Speed'])
+#create_weather1_plots('نمودار سرعت باد', ['Wind Speed'])
 
 
 
@@ -577,3 +593,4 @@ if st.checkbox("**تماس با ما**"):
     st.markdown("""
      **📧** info@solarttb.com
     """)
+
