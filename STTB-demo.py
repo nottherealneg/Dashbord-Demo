@@ -65,9 +65,13 @@ with st.sidebar:
     st.success("Done!")
     st.markdown(' خوش آمدید' )
     home = st.button("  🏠 خانه ")
-    
     dashboard = st.button("📊 داشبورد")
     settings = st.button("⚙️ تنظیمات")
+
+#chatbot
+prompt = st.chat_input("سلام خوش آمدید")
+if prompt:
+    st.write(f"User has sent the following prompt: {prompt}")
 
 # Load data
 @st.cache_data
