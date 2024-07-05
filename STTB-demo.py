@@ -421,13 +421,13 @@ def create_weather_plot(variable, selected_date, selected_plant_id):
     day_df = df_weather[(df_weather['Date'] == selected_date) & (df_weather['PLANT_ID'] == selected_plant_id)]
     
     if variable == 'IRRADIATION':
-        fig = go.Figure(go.Area(
+        fig = px.area(
             x=day_df['DATE_TIME'],
             y=day_df[variable],
             name=variable,
-            fillcolor='rgba(255, 165, 0, 0.5)',  # Light orange color
-            line=dict(color='rgb(255, 165, 0)')  # Darker orange for the line
-        ))
+            fillcolor='rgba(255, 165, 0, 0.5)',  
+            line=dict(color='rgb(255, 165, 0)')  
+        )
     else:
         fig = go.Figure(go.Scatter(
             x=day_df['DATE_TIME'],
