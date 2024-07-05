@@ -190,18 +190,20 @@ fig = px.bar(x=[f"Inverter {i}" for i in range(1, 7)], y=energy_yields,
 fig.update_layout(height=300)
 st.plotly_chart(fig, use_container_width=True)
 
-def calculate_avg_eac_total(df, year):
-    year_df = df[df['TIMESTAMP'].dt.year == year]
+###################
+
+def calculate_avg_eac_total(df, selected_date):
+    day_df = df[df['Date'] == selected_date]
     avg_eac_total = []
     for inverter in range(1, 7):
         column_name = f'Eac Total(kWh)_inv_{inverter}'
-        avg = year_df[column_name].mean()
+        avg = day_df[column_name].mean() if column_name in day_df.columns else 0
         avg_eac_total.append(avg)
     return avg_eac_total
 
-def create_plot(variable, selected_date, selected_inverter, selected_number=None, selected_year=None):
+def create_plot(variable, selected_date, selected_inverter, selected_number=None):
+    
     if variable == 'Eac Total' and selected_date:
-
         avg_eac_total = calculate_avg_eac_total(df, selected_date)
         fig = go.Figure(go.Scatter(
             x=list(range(1, 7)),
@@ -210,9 +212,9 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
             name='Avg Eac Total'
         ))
         fig.update_layout(
-            title=f'Average Eac Total {selected_year}',
+            title=f'Average Eac Total for {selected_date}',
             xaxis_title="اینورتر",
-            yaxis_title=" (kWh)  میانگین انرژی کل ",
+            yaxis_title=" (kWh) میانگین انرژی کل ",
             xaxis=dict(tickmode='linear', tick0=1, dtick=1),
             height=400,
             margin=dict(l=50, r=50, t=50, b=50),
