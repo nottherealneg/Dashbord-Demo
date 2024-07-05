@@ -224,13 +224,31 @@ def create_energy_yield_chart(kpi_date, energy_yields):
     return fig
 
 
-
+##########
+def create_solar_plant_map(latitude, longitude, zoom=15):
+    m = folium.Map(location=[latitude, longitude], zoom_start=zoom)
+    folium.Marker(
+        [latitude, longitude],
+        popup="Solar Plant Location",
+        tooltip="Solar Plant",
+        icon=folium.Icon(color="green", icon="solar-panel", prefix='fa')
+    ).add_to(m)
+    return m
+########
 col1, col2 = st.columns(2)
 
 with col1:
     energy_yields = [calculate_energy_yield(df, kpi_date, i) for i in range(1, 7)]
     fig_energy = create_energy_yield_chart(kpi_date, energy_yields)
     st.plotly_chart(fig_energy, use_container_width=True)
+with col2:
+    st.subheader("موقعیت نیروگاه خورشیدی")
+    # Replace these coordinates with the actual location of your solar plant
+    latitude = 35.6892  # Example: Tehran latitude
+    longitude = 51.3890  # Example: Tehran longitude
+    map = create_solar_plant_map(latitude, longitude)
+    folium_static(map, width=400, height=400)
+
 
 ###################
 
