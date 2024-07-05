@@ -297,8 +297,8 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
                 colorbar=dict(title='Temperature (°C)')
             ))
             fig.update_layout(
-                title=f'Temperature Heatmap for {selected_date}',
-                xaxis_title="زمان (ساعت)",
+                title=f'{selected_date}',
+                xaxis_title="زمان",
                 yaxis_title="اینورتر",
                 height=500,
                 margin=dict(l=50, r=50, t=50, b=50),
