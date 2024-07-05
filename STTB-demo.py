@@ -23,7 +23,7 @@ st.set_page_config(
 st.markdown("""
 <style>
 .custom-title {
-    font-family: 'Abjad', 'Arial', sans-serif !important;
+    font-family: 'B nazanin'!important;
     font-size: 40px !important;
     font-weight: bold !important;
     color: YlGn !important;
