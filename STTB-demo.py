@@ -496,7 +496,11 @@ df_weather1 = load_weather1_data()
 
 def create_weather1_plot(variable, selected_date):
     day_df = df_weather1[df_weather1['Date'].dt.date == selected_date]
-    fig = go.Figure(go.Scatter(x=day_df['Hours'], y=day_df[variable]))
+    
+    if variable == 'Humidity':
+        fig = px.bar(day_df, x='Hours', y=variable)
+    else:  # For Wind Speed and potentially other variables
+        fig = px.area(day_df, x='Hours', y=variable)
     
     y_axis_titles = {
         'Humidity': 'رطوبت (%)',
