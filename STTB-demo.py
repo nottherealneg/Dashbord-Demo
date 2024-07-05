@@ -65,16 +65,10 @@ with st.sidebar:
     settings = st.button("⚙️ تنظیمات")
 
 #################################### chatbot
-    messages = st.container(height=200)
-    if prompt := st.chat_input(" سلام ، خوش آمدید 🤖"):
+    messages = st.container(height=200,weight=200)
+    if prompt := st.chat_input("سلام،خوش آمدید 🤖"):
         messages.chat_message("کاربر میهمان").write(prompt)
         messages.chat_message("دستیار").write(f"🤖: {prompt}")
-
-
-
-
-
-
 
 #############################
 
