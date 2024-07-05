@@ -55,12 +55,10 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
-with st.sidebar:
-    
-    
 
-    
-    st.success("Done!")
+###### sidebar
+with st.sidebar:
+
     st.markdown(' خوش آمدید' )
     home = st.button("  🏠 خانه ")
     dashboard = st.button("📊 داشبورد")
