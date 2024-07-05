@@ -200,7 +200,7 @@ with col2:
     st.metric("Avg Utilization", f"{avg_utilization:.2f}%")
 
 with col3:
-    st.subheader(" تولید انرژی کل")
+    st.subheader(" کل تولید انرژی ")
     energy_yields = [calculate_energy_yield(df, kpi_date, i) for i in range(1, 7)]
     total_energy = sum(energy_yields)
     st.metric("Total Energy", f"{total_energy:.2f} kWh")
@@ -215,7 +215,7 @@ def create_energy_yield_chart(kpi_date, energy_yields):
 
     for i, yield_value in enumerate(energy_yields):
         fig.add_trace(go.Bar(
-            y=[f"Inverter {i+1}"],
+            y=[f"اینورتر {i+1}"],
             x=[yield_value],
             orientation='h',
             marker=dict(color=color_scale[i]),
