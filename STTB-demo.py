@@ -281,8 +281,8 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
                     'steps' : [
                         {'range': [0, 50], 'color': "lightgray"},
                         {'range': [50, 80], 'color': "gray"},
-                        {'range': [80, 100], 'color': "lightblue"}],
-                    'threshold' : {'line': {'color': "red", 'width': 4}, 'thickness': 0.75, 'value': 90}}))
+                        {'range': [80, 100], 'color': "lightyellow"}],
+                    'threshold' : {'line': {'color': "green", 'width': 4}, 'thickness': 0.75, 'value': 90}}))
             fig.update_layout(height=400)
         elif variable in ['Eac', 'Eac Total']:
             fig = go.Figure(go.Scatter(x=day_df['Hours'], y=day_df[column_name], name=f'{variable} (Inverter {selected_inverter})'))
@@ -354,6 +354,9 @@ create_section_plots("انرژی ", ['Eac', 'Eac Total'])
 create_section_plots("توان", ['Pdc', 'Pac'])
 create_section_plots("جریان", ['Iac', 'Ipv'])
 create_section_plots("ولتاژ", ['Uac', 'Upv'])
+
+
+#########
 
 # Data information
 if st.checkbox("**نمایش دیتا**"):
