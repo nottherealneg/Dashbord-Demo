@@ -279,8 +279,8 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
                     'axis': {'range': [None, 100]},
                     'bar': {'color': "green"},
                     'steps' : [
-                        {'range': [0, 50], 'color': "lightgray"},
-                        {'range': [50, 80], 'color': "gray"},
+                        {'range': [0, 50], 'color': "lightblue"},
+                        {'range': [50, 80], 'color': "lightgreen"},
                         {'range': [80, 100], 'color': "yellow"}],
                     'threshold' : {'line': {'color': "orange", 'width': 4}, 'thickness': 0.75, 'value': 90}}))
             fig.update_layout(height=400)
