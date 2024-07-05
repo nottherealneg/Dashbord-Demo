@@ -185,47 +185,46 @@ with col3:
 
 ########
 
-st.markdown("مقایسه تولید انرژی بین اینورترها")
+def create_energy_yield_chart(kpi_date, energy_yields):
+    colors = px.colors.sequential.YlGn
+    color_scale = [colors[i] for i in range(0, len(colors), len(colors)//6)][:6]
 
-energy_yields = [calculate_energy_yield(df, kpi_date, i) for i in range(1, 7)]
-colors = px.colors.sequential.YlGn
-color_scale = [colors[i] for i in range(0, len(colors), len(colors)//6)][:6]
+    fig = go.Figure()
 
-# the horizontal bar chart
-fig = go.Figure()
+    for i, yield_value in enumerate(energy_yields):
+        fig.add_trace(go.Bar(
+            y=[f"Inverter {i+1}"],
+            x=[yield_value],
+            orientation='h',
+            marker=dict(color=color_scale[i]),
+            name=f"Inverter {i+1}"
+        ))
 
-for i, yield_value in enumerate(energy_yields):
-    fig.add_trace(go.Bar(
-        y=[f"Inverter {i+1}"],
-        x=[yield_value],
-        orientation='h',
-        marker=dict(color=color_scale[i]),
-        name=f"Inverter {i+1}"
-    ))
-
-fig.update_layout(
-    title="Energy Yield Comparison",
-    xaxis_title="Energy Yield (kWh)",
-    yaxis_title="Inverters",
-    height=400,
-    barmode='stack',
-    showlegend=False,
-    xaxis=dict(range=[0, max(energy_yields) * 1.1])  
-)
-
-#labels
-for i, yield_value in enumerate(energy_yields):
-    fig.add_annotation(
-        x=yield_value,
-        y=i,
-        text=f"{yield_value:.2f} kWh",
-        showarrow=False,
-        xanchor='left',
-        xshift=10,
-        font=dict(color="white")
+    fig.update_layout(
+        title="Energy Yield Comparison",
+        xaxis_title="Energy Yield (kWh)",
+        yaxis_title="Inverters",
+        height=400,
+        barmode='stack',
+        showlegend=False,
+        xaxis=dict(range=[0, max(energy_yields) * 1.1])  
     )
 
-st.plotly_chart(fig, use_container_width=True)
+    for i, yield_value in enumerate(energy_yields):
+        fig.add_annotation(
+            x=yield_value,
+            y=i,
+            text=f"{yield_value:.2f} kWh",
+            showarrow=False,
+            xanchor='left',
+            xshift=10,
+            font=dict(color="white")
+        )
+
+    return fig
+
+
+
 ###################
 
 def calculate_avg_eac_total(df, selected_date):
@@ -349,7 +348,25 @@ def create_section_plots(header, variables):
             else:
                 st.warning(f"No data available for {variable}")
 
-create_section_plots("بازده" , ['InvEfficient'])
+
+
+st.header("مقایسه تولید انرژی و بازده اینورترها", divider='rainbow')
+
+col1, col2 = st.columns(2)
+
+with col1:
+    energy_yields = [calculate_energy_yield(df, kpi_date, i) for i in range(1, 7)]
+    fig_energy = create_energy_yield_chart(kpi_date, energy_yields)
+    st.plotly_chart(fig_energy, use_container_width=True)
+
+with col2:
+    selected_date, selected_inverter, _ = create_settings('InvEfficient', 'plot_InvEfficient')
+    fig_efficiency = create_plot('InvEfficient', selected_date, selected_inverter)
+    if fig_efficiency:
+        st.plotly_chart(fig_efficiency, use_container_width=True)
+    else:
+        st.warning("No data available for InvEfficient")
+
 create_section_plots("انرژی ", ['Eac', 'Eac Total'])
 create_section_plots("توان", ['Pdc', 'Pac'])
 create_section_plots("جریان", ['Iac', 'Ipv'])
