@@ -102,7 +102,7 @@ if st.session_state.logged_in:
     st.write('شما وارد شده‌اید. محتوای اصلی اینجا نمایش داده می‌شود.')
    
 else:
-    st.write('لطفا برای دسترسی به محتوا وارد شوید')
+    st.write('← لطفا برای دسترسی به محتوا وارد شوید')
 
 #################################### chatbot
 #messages = st.container(height=500,border=True)
