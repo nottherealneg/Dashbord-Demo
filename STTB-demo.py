@@ -411,24 +411,19 @@ create_section_plots("دمای اینورتر", ['Temp'])
 
 @st.cache_data
 def load_weather_data():
-    weather_df = pd.read_excel('Data-weather1.xlsx')
-    weather_df['DATE_TIME'] = pd.to_datetime(weather_df['DATE_TIME'])
-    return weather_df
+    df_weather = pd.read_excel('Data-weather2.xlsx')
+    df_weather['DATE_TIME'] = pd.to_datetime(df_weather['DATE_TIME'])
+    df_weather['Date'] = df_weather['DATE_TIME'].dt.date
+    return df_weather
 
-weather_df = load_weather_data()
+df_weather = load_weather_data()
+
+
 
 def create_weather_plot(variable, selected_date, selected_plant_id):
-    day_df = weather_df[
-        (weather_df['Date'] == selected_date) &
-        (weather_df['PLANT_ID'] == selected_plant_id)
-    ]
+    day_df = df_weather[(df_weather['Date'] == selected_date) & (df_weather['PLANT_ID'] == selected_plant_id)]
     
-    fig = go.Figure(go.Scatter(
-        x=day_df['Hours'],
-        y=day_df[variable],
-        mode='lines+markers',
-        name=variable
-    ))
+    fig = go.Figure(go.Scatter(x=day_df['Hours'], y=day_df[variable], name=variable))
     
     y_axis_titles = {
         'IRRADIATION': 'Irradiation',
@@ -436,62 +431,39 @@ def create_weather_plot(variable, selected_date, selected_plant_id):
         'MODULE_TEMPERATURE': 'Module Temperature (°C)'
     }
     
+    y_axis_title = y_axis_titles.get(variable, variable)
+    
     fig.update_layout(
         title=f'{variable} for Plant ID {selected_plant_id} on {selected_date}',
         xaxis_title="Hours",
-        yaxis_title=y_axis_titles.get(variable, variable),
+        yaxis_title=y_axis_title,
         height=400,
         margin=dict(l=50, r=50, t=50, b=50),
     )
-    
     return fig
 
-def create_weather_settings(key_prefix):
-    with st.expander(f"Weather Plot Settings ⚙️", expanded=False):
+def create_weather_settings(variable, key_prefix):
+    with st.expander(f"{variable} Settings ⚙️", expanded=False):
         st.markdown('<style>div[data-testid="stExpander"] div[role="button"] p {color: #0066cc;}</style>', unsafe_allow_html=True)
-        
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            selected_plant_id = st.selectbox('Plant ID', weather_df['PLANT_ID'].unique(), key=f'{key_prefix}_plant_id')
-        
-        with col2:
-            selected_year = st.selectbox('Year', weather_df['Year'].unique(), key=f'{key_prefix}_year')
-        
-        col3, col4 = st.columns(2)
-        
-        with col3:
-            selected_month = st.selectbox('Month', range(1, 13), key=f'{key_prefix}_month')
-        
-        with col4:
-            max_day = 31 if selected_month in [1, 3, 5, 7, 8, 10, 12] else 30 if selected_month in [4, 6, 9, 11] else 29
-            selected_day = st.selectbox('Day', range(1, max_day + 1), key=f'{key_prefix}_day')
-        
-        selected_date = pd.Timestamp(selected_year, selected_month, selected_day).date()
-        
+        selected_date = st.date_input('Date', min_value=df_weather['Date'].min(), max_value=df_weather['Date'].max(), value=df_weather['Date'].min(), key=f'{key_prefix}_date')
+        selected_plant_id = st.selectbox('Plant ID', df_weather['PLANT_ID'].unique(), key=f'{key_prefix}_plant_id')
     return selected_date, selected_plant_id
 
-def create_weather_section():
+
+def create_weather_plots():
     st.header("Weather Data")
-    
     weather_variables = ['IRRADIATION', 'AMBIENT_TEMPERATURE', 'MODULE_TEMPERATURE']
     cols = st.columns(len(weather_variables))
-    
     for i, variable in enumerate(weather_variables):
         with cols[i]:
-            selected_date, selected_plant_id = create_weather_settings(f'weather_plot_{variable}')
+            selected_date, selected_plant_id = create_weather_settings(variable, f'weather_{variable}')
             fig = create_weather_plot(variable, selected_date, selected_plant_id)
-            st.plotly_chart(fig, use_container_width=True)
+            if fig:
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.warning(f"No data available for {variable}")
 
-
-create_weather_section()
-
-
-
-
-
-
-
+create_weather_plots()
 
 
 
