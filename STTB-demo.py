@@ -142,25 +142,26 @@ def get_column_name(variable, number=None, inverter=None):
         return f'{variable}{number}(V)_inv_{inverter}'
     elif variable in ['Pac', 'Pdc']:
         return f'{variable}(kW)_inv_{inverter}'
-    else: # Eac
+    elif variable == 'Eac':
         return f'{variable}(kWh)_inv_{inverter}'
-
-plot_variables = ['Pdc', 'Pac', 'Iac', 'Ipv', 'Uac', 'Upv', 'Eac']
-
-
-def create_plot(variable, selected_date, selected_inverter, selected_number=None):
-    if variable in ['Iac', 'Ipv', 'Uac', 'Upv']:
-        column_name = get_column_name(variable, selected_number, selected_inverter)
+    elif variable == 'Eac Total':
+        return f'{variable}(kWh)_inv_{inverter}'
+    elif variable == 'invEfficient':
+        return f'{variable}(%)_inv_{inverter}'
     else:
-        column_name = get_column_name(variable, inverter=selected_inverter)
+        return f'{variable}_inv_{inverter}'
+
+plot_variables = ['Pdc', 'Pac', 'Iac', 'Ipv', 'Uac', 'Upv', 'Eac', 'Eac Total', 'invEfficient']
+def create_plot(variable, selected_date, selected_inverter, selected_number=None):
+    column_name = get_column_name(variable, selected_number, selected_inverter)
     
     day_df = df[df['Date'] == selected_date]
     
     if column_name in day_df.columns:
         fig = go.Figure()
         
-        if variable == 'Eac':
-            # Bar plot for Eac
+        if variable in ['Eac', 'Eac Total']:
+            # Bar plot for Eac and Eac Total
             fig.add_trace(
                 go.Bar(x=day_df['Hours'], y=day_df[column_name], name=f'{variable} (Inverter {selected_inverter})')
             )
@@ -178,7 +179,9 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
             'Ipv': "(A) DC جریان ",
             'Uac': "(V) AC ولتاژ ",
             'Upv': "(V) DC ولتاژ ",
-            'Eac': '(kWh)انرژی '
+            'Eac': '(kWh)انرژی ',
+            'Eac Total': '(kWh)کل انرژی ',
+            'invEfficient': '(%)کارایی اینورتر '
         }
         
         y_axis_title = y_axis_titles.get(variable, variable)  
@@ -193,19 +196,6 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
         return fig
     else:
         return None
-        
-        y_axis_title = y_axis_titles.get(variable, variable)  
-        
-        fig.update_layout(
-            title=f'inverter {selected_inverter}' + (f' - {variable}{selected_number}' if selected_number else ''),
-            xaxis_title="زمان",
-            yaxis_title=y_axis_title,
-            height=400,
-            margin=dict(l=50, r=50, t=50, b=50),
-        )
-        return fig
-   
-        
 
 # Create settings
 def create_settings(variable, key_prefix):
@@ -239,7 +229,8 @@ def create_section_plots(header, variables):
 create_section_plots("توان", ['Pdc', 'Pac'])
 create_section_plots("جریان", ['Iac', 'Ipv'])
 create_section_plots("ولتاژ", ['Uac', 'Upv'])
-create_section_plots("انرژی", ['Eac'])
+create_section_plots("انرژی", ['Eac', 'Eac Total'])
+create_section_plots("بازده", ['invEfficient'])
 
 
 
