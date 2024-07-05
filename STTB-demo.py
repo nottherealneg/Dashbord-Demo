@@ -430,7 +430,7 @@ def create_weather_plot(variable, selected_date, selected_plant_id):
                                  title=f'Irradiation Density for Plant ID {selected_plant_id} on {selected_date}')
         fig.update_traces(marker=dict(size=8))
     else:
-        fig = go.Figure(go.Scatter(x=day_df['Hours'], y=day_df[variable], name=variable))
+        fig = go.Figure(go.Scatter(x=day_df['Hours'], y=day_df[variable], mode='lines+markers', name=variable))
         
         y_axis_titles = {
             'AMBIENT_TEMPERATURE': 'Ambient Temperature (°C)',
@@ -451,9 +451,8 @@ def create_weather_plot(variable, selected_date, selected_plant_id):
     )
     return fig
 
-
 def create_weather_settings(variable, key_prefix):
-    with st.expander(f"تنظیمات ⚙️", expanded=False):
+    with st.expander(f"{variable} Settings ⚙️", expanded=False):
         st.markdown('<style>div[data-testid="stExpander"] div[role="button"] p {color: #0066cc;}</style>', unsafe_allow_html=True)
         selected_date = st.date_input('Date', min_value=df_weather['Date'].min(), max_value=df_weather['Date'].max(), value=df_weather['Date'].min(), key=f'{key_prefix}_date')
         selected_plant_id = st.selectbox('Plant ID', df_weather['PLANT_ID'].unique(), key=f'{key_prefix}_plant_id')
@@ -461,7 +460,7 @@ def create_weather_settings(variable, key_prefix):
 
 
 def create_weather_plots():
-    st.header("دیتای آب و هوایی")
+    st.header("Weather Data")
     weather_variables = ['IRRADIATION', 'AMBIENT_TEMPERATURE', 'MODULE_TEMPERATURE']
     cols = st.columns(len(weather_variables))
     for i, variable in enumerate(weather_variables):
