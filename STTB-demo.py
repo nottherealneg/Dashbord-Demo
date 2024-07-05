@@ -130,7 +130,7 @@ with col2:
 
 ######get data
 
-plot_variables = ['Pdc', 'Pac', 'Iac', 'Ipv', 'Uac', 'Upv', 'Eac', 'Eac Total', 'InvEfficient']
+plot_variables = ['Pdc', 'Pac', 'Iac', 'Ipv', 'Uac', 'Upv', 'Eac', 'Eac Total', 'InvEfficient', 'Temp']
 
 def get_column_name(variable, number=None, inverter=None):
     if variable in ['Iac', 'Ipv', 'Uac', 'Upv']:
@@ -143,6 +143,8 @@ def get_column_name(variable, number=None, inverter=None):
         return f'{variable}(kWh)_inv_{inverter}'
     elif variable == 'InvEfficient':
         return f'{variable}(%)_inv_{inverter}'
+    elif variable == 'Temp':
+        return f'{variable}(degC)_inv_{inverter}'
     else:
         return f'{variable}_inv_{inverter}'
 
@@ -257,9 +259,7 @@ def calculate_avg_eac_total(df, selected_date):
     return avg_eac_total
 
 #############
-
 def create_plot(variable, selected_date, selected_inverter, selected_number=None):
-
     if variable == 'Eac Total' and selected_date:
         avg_eac_total = calculate_avg_eac_total(df, selected_date)
         fig = go.Figure(go.Scatter(
@@ -278,7 +278,9 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
         )
         return fig
     
-    if variable in ['Iac', 'Ipv', 'Uac', 'Upv']:
+    if variable == 'Temp':
+        column_name = get_column_name(variable, inverter=selected_inverter)
+    elif variable in ['Iac', 'Ipv', 'Uac', 'Upv']:
         column_name = get_column_name(variable, selected_number, selected_inverter)
     else:
         column_name = get_column_name(variable, inverter=selected_inverter)
@@ -316,7 +318,8 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
             'Upv': "(V) DC ولتاژ ",
             'Eac': '(kWh)انرژی ',
             'Eac Total': '(kWh)کل انرژی ',
-            'InvEfficient': '(%)کارایی اینورتر '
+            'InvEfficient': '(%)کارایی اینورتر ',
+            'Temp': '(°C)دما '
         }
         
         y_axis_title = y_axis_titles.get(variable, variable)  
@@ -332,7 +335,7 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
         return fig
     else:
         return None
-
+    
 ########
 def create_settings(variable, key_prefix):
     with st.expander(f" تنظیمات ⚙️", expanded=False):
@@ -372,6 +375,7 @@ create_section_plots("انرژی ", ['Eac', 'Eac Total'])
 create_section_plots("توان", ['Pdc', 'Pac'])
 create_section_plots("جریان", ['Iac', 'Ipv'])
 create_section_plots("ولتاژ", ['Uac', 'Upv'])
+create_section_plots("دما", ['Temp'])
 
 # Data information
 if st.checkbox("**نمایش دیتا**"):
