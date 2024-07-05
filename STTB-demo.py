@@ -408,62 +408,24 @@ create_section_plots("ولتاژ", ['Uac', 'Upv'])
 
 
 ####################
-
-# Load weather data
 @st.cache_data
 def load_weather_data():
     df_weather = pd.read_excel('Data-weather2.xlsx')
     df_weather['DATE_TIME'] = pd.to_datetime(df_weather['DATE_TIME'])
     df_weather['Date'] = df_weather['DATE_TIME'].dt.date
-    df_weather['Hours'] = df_weather['DATE_TIME'].dt.hour + df_weather['DATE_TIME'].dt.minute / 60
     return df_weather
 
 df_weather = load_weather_data()
 
-# Create plant schematic
-def create_plant_schematic():
-    plant_ids = df_weather['PLANT_ID'].unique()
-    num_plants = len(plant_ids)
-    
-    fig = go.Figure()
-
-    for i, plant_id in enumerate(plant_ids):
-        x = i % 3  # Arrange plants in a grid, 3 columns
-        y = i // 3
-        
-        fig.add_trace(go.Scatter(
-            x=[x],
-            y=[y],
-            mode='markers+text',
-            marker=dict(size=50, color='lightblue', line=dict(width=2, color='darkblue')),
-            text=[f'Plant {plant_id}'],
-            textposition='middle center',
-            name=f'Plant {plant_id}'
-        ))
-
-    fig.update_layout(
-        title='نمایش شماتیک نیروگاه ها',
-        showlegend=False,
-        xaxis=dict(showticklabels=False, showgrid=False),
-        yaxis=dict(showticklabels=False, showgrid=False),
-        height=300,
-        margin=dict(l=20, r=20, t=40, b=20),
-    )
-
-    return fig
-
-# Create weather plot
 def create_weather_plot(variable, selected_date, selected_plant_id):
     day_df = df_weather[(df_weather['Date'] == selected_date) & (df_weather['PLANT_ID'] == selected_plant_id)]
-    
-    fig = go.Figure(go.Scatter(x=day_df['Hours'], y=day_df[variable], name=variable))
+    fig = go.Figure(go.Scatter(x=day_df['DATE_TIME'], y=day_df[variable], name=variable))
     
     y_axis_titles = {
         'IRRADIATION': 'تابش',
         'AMBIENT_TEMPERATURE': '(°C) دمای محیط ',
         'MODULE_TEMPERATURE': '(°C) دمای ماژول'
     }
-    
     y_axis_title = y_axis_titles.get(variable, variable)
     
     fig.update_layout(
@@ -474,7 +436,6 @@ def create_weather_plot(variable, selected_date, selected_plant_id):
     )
     return fig
 
-# Create weather settings
 def create_weather_settings(variable, key_prefix):
     with st.expander(f"تنظیمات ⚙️", expanded=False):
         st.markdown('<style>div[data-testid="stExpander"] div[role="button"] p {color: #0066cc;}</style>', unsafe_allow_html=True)
@@ -482,27 +443,18 @@ def create_weather_settings(variable, key_prefix):
         selected_plant_id = st.selectbox('Plant ID', df_weather['PLANT_ID'].unique(), key=f'{key_prefix}_plant_id')
     return selected_date, selected_plant_id
 
-# Create weather plots
 def create_weather_plots():
     st.header("دیتای آب و هوایی")
-    
-    # Add the plant schematic
-    st.subheader("نمایش شماتیک نیروگاه ها")
-    schematic_fig = create_plant_schematic()
-    st.plotly_chart(schematic_fig, use_container_width=True)
-    
     weather_variables = ['IRRADIATION', 'AMBIENT_TEMPERATURE', 'MODULE_TEMPERATURE']
     cols = st.columns(len(weather_variables))
     for i, variable in enumerate(weather_variables):
         with cols[i]:
             selected_date, selected_plant_id = create_weather_settings(variable, f'weather_{variable}')
             fig = create_weather_plot(variable, selected_date, selected_plant_id)
-            if fig:
+            if fig is not None:
                 st.plotly_chart(fig, use_container_width=True)
             else:
-                st.warning(f"داده ای برای این متغیر موجود نیست")
-
-
+                st.warning(f"No data available for {variable}")
 
 ########################                
 
