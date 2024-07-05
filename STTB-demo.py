@@ -193,7 +193,7 @@ st.plotly_chart(fig, use_container_width=True)
 ###################
 
 def calculate_avg_eac_total(df, selected_date):
-    
+
     day_df = df[df['Date'] == selected_date]
     avg_eac_total = []
     for inverter in range(1, 7):
@@ -304,11 +304,8 @@ def create_section_plots(header, variables):
     cols = st.columns(len(variables))
     for i, variable in enumerate(variables):
         with cols[i]:
-            selected_date, selected_inverter, selected_number, selected_year = create_settings(variable, f'plot_{variable}')
-            if variable == 'Eac Total':
-                fig = create_plot(variable, None, None, None, selected_year)
-            else:
-                fig = create_plot(variable, selected_date, selected_inverter, selected_number)
+            selected_date, selected_inverter, selected_number = create_settings(variable, f'plot_{variable}')
+            fig = create_plot(variable, selected_date, selected_inverter, selected_number)
             if fig:
                 st.plotly_chart(fig, use_container_width=True)
             else:
