@@ -19,7 +19,7 @@ st.markdown("""
     font-family: 'Abjad', 'Arial', sans-serif !important;
     font-size: 40px !important;
     font-weight: bold !important;
-    color: white !important;
+    color: YlGn !important;
     text-align: center !important;
 }
 </style>
@@ -186,13 +186,12 @@ with col3:
 ########
 
 st.markdown("مقایسه تولید انرژی بین اینورترها")
-energy_yields = [calculate_energy_yield(df, kpi_date, i) for i in range(1, 7)]
 
-# Generate a rainbow color scale
+energy_yields = [calculate_energy_yield(df, kpi_date, i) for i in range(1, 7)]
 colors = px.colors.sequential.YlGn
 color_scale = [colors[i] for i in range(0, len(colors), len(colors)//6)][:6]
 
-# Create the horizontal bar chart
+# the horizontal bar chart
 fig = go.Figure()
 
 for i, yield_value in enumerate(energy_yields):
@@ -211,10 +210,10 @@ fig.update_layout(
     height=400,
     barmode='stack',
     showlegend=False,
-    xaxis=dict(range=[0, max(energy_yields) * 1.1])  # Set x-axis range with 10% padding
+    xaxis=dict(range=[0, max(energy_yields) * 1.1])  
 )
 
-# Add value labels to the end of each bar
+#labels
 for i, yield_value in enumerate(energy_yields):
     fig.add_annotation(
         x=yield_value,
