@@ -426,16 +426,16 @@ def create_weather_plot(variable, selected_date, selected_plant_id):
     fig = go.Figure(go.Scatter(x=day_df['Hours'], y=day_df[variable], name=variable))
     
     y_axis_titles = {
-        'IRRADIATION': 'Irradiation',
-        'AMBIENT_TEMPERATURE': 'Ambient Temperature (°C)',
-        'MODULE_TEMPERATURE': 'Module Temperature (°C)'
+        'IRRADIATION': 'تابش',
+        'AMBIENT_TEMPERATURE': ' (°C) دمای محیط ',
+        'MODULE_TEMPERATURE': ' (°C) دمای ماژول '
     }
     
     y_axis_title = y_axis_titles.get(variable, variable)
     
     fig.update_layout(
         title=f'{variable} for Plant ID {selected_plant_id} on {selected_date}',
-        xaxis_title="Hours",
+        xaxis_title="ساعت",
         yaxis_title=y_axis_title,
         height=400,
         margin=dict(l=50, r=50, t=50, b=50),
@@ -451,7 +451,7 @@ def create_weather_settings(variable, key_prefix):
 
 
 def create_weather_plots():
-    st.header("Weather Data")
+    st.header("دیتای آب و هوایی")
     weather_variables = ['IRRADIATION', 'AMBIENT_TEMPERATURE', 'MODULE_TEMPERATURE']
     cols = st.columns(len(weather_variables))
     for i, variable in enumerate(weather_variables):
