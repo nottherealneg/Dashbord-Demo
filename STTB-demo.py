@@ -226,7 +226,7 @@ def create_energy_yield_chart(kpi_date, energy_yields):
 
 
 
-st.header("مقایسه تولید انرژی")
+st.markdown("مقایسه تولید انرژی")
 
 col1 = st.columns(1)[0]  
 
