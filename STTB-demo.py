@@ -218,18 +218,29 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
     day_df = df[df['Date'] == selected_date]
     
     if column_name in day_df.columns:
-        fig = go.Figure()
-        
-        if variable in ['Eac', 'Eac Total']:
+        if variable == 'InvEfficient':
+            # Gauge chart for efficiency
+            efficiency = day_df[column_name].mean()
+            fig = go.Figure(go.Indicator(
+                mode = "gauge+number",
+                value = efficiency,
+                domain = {'x': [0, 1], 'y': [0, 1]},
+                title = {'text': f"Inverter {selected_inverter} Efficiency"},
+                gauge = {
+                    'axis': {'range': [None, 100]},
+                    'bar': {'color': "darkblue"},
+                    'steps' : [
+                        {'range': [0, 50], 'color': "lightgray"},
+                        {'range': [50, 80], 'color': "gray"},
+                        {'range': [80, 100], 'color': "lightblue"}],
+                    'threshold' : {'line': {'color': "red", 'width': 4}, 'thickness': 0.75, 'value': 90}}))
+            fig.update_layout(height=400)
+        elif variable in ['Eac', 'Eac Total']:
             # Bar plot for Eac and Eac Total
-            fig.add_trace(
-                go.Bar(x=day_df['Hours'], y=day_df[column_name], name=f'{variable} (Inverter {selected_inverter})')
-            )
+            fig = go.Figure(go.Bar(x=day_df['Hours'], y=day_df[column_name], name=f'{variable} (Inverter {selected_inverter})'))
         else:
             # Line plot for other variables
-            fig.add_trace(
-                go.Scatter(x=day_df['Hours'], y=day_df[column_name], name=f'{variable} (Inverter {selected_inverter})')
-            )
+            fig = go.Figure(go.Scatter(x=day_df['Hours'], y=day_df[column_name], name=f'{variable} (Inverter {selected_inverter})'))
         
         # Define y-axis title based on variable
         y_axis_titles = {
@@ -246,13 +257,14 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
         
         y_axis_title = y_axis_titles.get(variable, variable)  
         
-        fig.update_layout(
-            title=f'inverter {selected_inverter}' + (f' - {variable}{selected_number}' if selected_number else ''),
-            xaxis_title="زمان",
-            yaxis_title=y_axis_title,
-            height=400,
-            margin=dict(l=50, r=50, t=50, b=50),
-        )
+        if variable != 'InvEfficient':
+            fig.update_layout(
+                title=f'inverter {selected_inverter}' + (f' - {variable}{selected_number}' if selected_number else ''),
+                xaxis_title="زمان",
+                yaxis_title=y_axis_title,
+                height=400,
+                margin=dict(l=50, r=50, t=50, b=50),
+            )
         return fig
     else:
         return None
