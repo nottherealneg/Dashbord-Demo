@@ -277,12 +277,12 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
                 title = {'text': f"بازده میانگین   اینورتر {selected_inverter}"},
                 gauge = {
                     'axis': {'range': [None, 100]},
-                    'bar': {'color': "darkblue"},
+                    'bar': {'color': "green"},
                     'steps' : [
                         {'range': [0, 50], 'color': "lightgray"},
                         {'range': [50, 80], 'color': "gray"},
-                        {'range': [80, 100], 'color': "lightyellow"}],
-                    'threshold' : {'line': {'color': "green", 'width': 4}, 'thickness': 0.75, 'value': 90}}))
+                        {'range': [80, 100], 'color': "yello"}],
+                    'threshold' : {'line': {'color': "orange", 'width': 4}, 'thickness': 0.75, 'value': 90}}))
             fig.update_layout(height=400)
         elif variable in ['Eac', 'Eac Total']:
             fig = go.Figure(go.Scatter(x=day_df['Hours'], y=day_df[column_name], name=f'{variable} (Inverter {selected_inverter})'))
@@ -355,9 +355,6 @@ create_section_plots("توان", ['Pdc', 'Pac'])
 create_section_plots("جریان", ['Iac', 'Ipv'])
 create_section_plots("ولتاژ", ['Uac', 'Upv'])
 
-
-#########
-
 # Data information
 if st.checkbox("**نمایش دیتا**"):
    st.dataframe(df)  
@@ -372,6 +369,9 @@ if st.checkbox("**درباره ما**"):
     with the best research institutes like Fraunhofer & VDE ,
     universities, suppliers, laboratories in Germany, UK, Italy, Denmark and Switzerland.
     """)
+
+
+############
 
 # contact Us section
 if st.checkbox("**تماس با ما**"):
