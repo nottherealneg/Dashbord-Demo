@@ -279,8 +279,35 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
         return fig
     
     if variable == 'Temp':
-        column_name = get_column_name(variable, inverter=selected_inverter)
-    elif variable in ['Iac', 'Ipv', 'Uac', 'Upv']:
+        # Create a heatmap for all inverters
+        inverters = range(1, 7)  # Assuming 6 inverters
+        temp_data = []
+        for inv in inverters:
+            column_name = get_column_name(variable, inverter=inv)
+            if column_name in df.columns:
+                day_df = df[df['Date'] == selected_date]
+                temp_data.append(day_df[column_name])
+        
+        if temp_data:
+            fig = go.Figure(data=go.Heatmap(
+                z=temp_data,
+                x=day_df['Hours'],
+                y=[f'Inverter {i}' for i in inverters],
+                colorscale='YlOrRd',
+                colorbar=dict(title='Temperature (°C)')
+            ))
+            fig.update_layout(
+                title=f'Temperature Heatmap for {selected_date}',
+                xaxis_title="زمان (ساعت)",
+                yaxis_title="اینورتر",
+                height=500,
+                margin=dict(l=50, r=50, t=50, b=50),
+            )
+            return fig
+        else:
+            return None
+    
+    if variable in ['Iac', 'Ipv', 'Uac', 'Upv']:
         column_name = get_column_name(variable, selected_number, selected_inverter)
     else:
         column_name = get_column_name(variable, inverter=selected_inverter)
@@ -342,7 +369,7 @@ def create_settings(variable, key_prefix):
         st.markdown('<style>div[data-testid="stExpander"] div[role="button"] p {color: #0066cc;}</style>', unsafe_allow_html=True)
         selected_date = st.date_input('تاریخ', min_value=dates.min(), max_value=dates.max(), value=dates[0], key=f'{key_prefix}_date')
         
-        if variable != 'Eac Total':
+        if variable not in ['Eac Total', 'Temp']:
             selected_inverter = st.selectbox(f'شماره اینورتر', range(1, 7), key=f'{key_prefix}_inverter')
             if variable in ['Iac', 'Ipv', 'Uac', 'Upv']:
                 num_options = 3 if variable in ['Iac', 'Uac'] else 4
