@@ -494,29 +494,39 @@ def load_weather1_data():
 
 df_weather1 = load_weather1_data()
 
+
+
 def create_weather1_plot(variable, selected_date):
+    day_df = df_weather1[df_weather1['Date'].dt.date == selected_date]
+    
     if variable == 'Humidity':
-        # Group humidity data into ranges
         bins = [0, 20, 30, 40, 50, 60, 70, 80, 90, 100]
         labels = ['0-20%', '20-30%', '30-40%', '40-50%', '50-60%', '60-70%', '70-80%', '80-90%', '90-100%']
         df_weather1['Humidity_Range'] = pd.cut(df_weather1['Humidity'], bins=bins, labels=labels, include_lowest=True)
-        
-        # Count occurrences in each range
         humidity_counts = df_weather1['Humidity_Range'].value_counts().sort_index()
         
-        # Create pie chart
-        fig = px.pie(values=humidity_counts.values, names=humidity_counts.index, title='Humidity Distribution')
+        fig = px.pie(values=humidity_counts.values, names=humidity_counts.index)
         fig.update_traces(textposition='inside', textinfo='percent+label')
-    else:
-        fig = px.scatter(df_weather1, y=variable, title=f'{variable} Distribution')
+
+    else:  
+        fig = px.area(day_df, x='Hours', y=variable)
+        y_axis_title = '(m/s) سرعت باد ' if variable == 'Wind Speed' else variable
+        fig.update_layout(
+            xaxis_title="زمان",
+            yaxis_title=y_axis_title,
+        )
     
-    fig.update_layout(height=400, margin=dict(l=50, r=50, t=50, b=50))
+    fig.update_layout(
+        height=400,
+        margin=dict(l=50, r=50, t=50, b=50),
+    )
     return fig
 
 def create_weather1_settings(variable, key_prefix):
     with st.expander(f"تنظیمات ⚙️", expanded=False):
         st.markdown('<style>div[data-testid="stExpander"] div[role="button"] p {color: #0066cc;}</style>', unsafe_allow_html=True)
-    return None  # We don't need date selection for this dataset
+        selected_date = st.date_input('Date', min_value=df_weather1['Date'].min().date(), max_value=df_weather1['Date'].max().date(), value=df_weather1['Date'].min().date(), key=f'{key_prefix}_date')
+    return selected_date
 
 def create_weather1_plots(header, weather_variables):
     st.header(header)
