@@ -171,6 +171,8 @@ def calculate_energy_yield(df, date, inverter):
     day_df = df[(df['Date'] == date) & (df[f'Eac(kWh)_inv_{inverter}'].notna())]
     return day_df[f'Eac(kWh)_inv_{inverter}'].max() if not day_df.empty else 0
 
+###############
+
 # KPI Section
 st.header("شاخص های کلیدی عملکرد", divider='rainbow')
 kpi_date = st.date_input('انتخاب تاریخ جهت محاسبه شاخص ها', min_value=dates.min(), max_value=dates.max(), value=dates[0])
@@ -402,7 +404,32 @@ create_section_plots("انرژی ", ['Eac', 'Eac Total'])
 create_section_plots("توان", ['Pdc', 'Pac'])
 create_section_plots("جریان", ['Iac', 'Ipv'])
 create_section_plots("ولتاژ", ['Uac', 'Upv'])
-create_section_plots("دما", ['Temp'])
+create_section_plots("دمای اینورتر", ['Temp'])
+
+
+####################
+
+
+
+
+
+
+
+
+
+
+
+
+####################
+
+
+
+
+
+
+
+
+
 
 # Data information
 if st.checkbox("**نمایش دیتا**"):
