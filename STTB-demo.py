@@ -204,10 +204,10 @@ for i, yield_value in enumerate(energy_yields):
     ))
 
 fig.update_layout(
-    title="Energy Yield Comparison",
+    
     xaxis_title="Energy Yield (kWh)",
-    yaxis_title="Inverters",
-    height=400,
+    yaxis_title="اینورتر",
+    height=350,
     barmode='stack',
     showlegend=False,
     xaxis=dict(range=[0, max(energy_yields) * 1.1])  
