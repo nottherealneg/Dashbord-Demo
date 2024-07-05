@@ -204,8 +204,8 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
             margin=dict(l=50, r=50, t=50, b=50),
         )
         return fig
-    else:
-        return None
+   
+        
 
 # Create settings
 def create_settings(variable, key_prefix):
