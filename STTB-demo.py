@@ -198,7 +198,7 @@ with col3:
     st.metric("Total Energy", f"{total_energy:.2f} kWh")
     
     # Create a bar chart for energy yield comparison
-    fig = px.bar(x=[f"Inverter {i}" for i in range(1, 7)], y=energy_yields,
+    fig = px.px.pie(x=[f"Inverter {i}" for i in range(1, 7)], y=energy_yields,
                  labels={'x': 'Inverter', 'y': 'Energy Yield (kWh)'})
     fig.update_layout(title='مقایسه تولید انرژی بین اینورترها', height=300)
     st.plotly_chart(fig, use_container_width=True)
