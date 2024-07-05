@@ -123,7 +123,7 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
             'Eac': '(kWh)انرژی '
         }
         
-        y_axis_title = y_axis_titles.get(variable, variable)  # Use the original variable name if not found in the dictionary
+        y_axis_title = y_axis_titles.get(variable, variable)  
         
         fig.update_layout(
             title=f'inverter {selected_inverter}' + (f' - {variable}{selected_number}' if selected_number else ''),
