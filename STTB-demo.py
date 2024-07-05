@@ -159,6 +159,54 @@ def get_unit(variable):
     else:
         return ''
 ############################################################
+def calculate_daily_peak_power(df, date, inverter):
+    day_df = df[(df['Date'] == date) & (df[f'Pac(kW)_inv_{inverter}'].notna())]
+    return day_df[f'Pac(kW)_inv_{inverter}'].max() if not day_df.empty else 0
+
+def calculate_capacity_utilization(df, date, inverter, rated_capacity):
+    day_df = df[(df['Date'] == date) & (df[f'Pac(kW)_inv_{inverter}'].notna())]
+    avg_pac = day_df[f'Pac(kW)_inv_{inverter}'].mean() if not day_df.empty else 0
+    return (avg_pac / rated_capacity) * 100 if rated_capacity > 0 else 0
+
+def calculate_energy_yield(df, date, inverter):
+    day_df = df[(df['Date'] == date) & (df[f'Eac(kWh)_inv_{inverter}'].notna())]
+    return day_df[f'Eac(kWh)_inv_{inverter}'].max() if not day_df.empty else 0
+
+# KPI Section
+st.header("شاخص های کلیدی عملکرد")
+
+col1, col2, col3 = st.columns(3)
+
+# Date selection for KPIs
+kpi_date = st.date_input('تاریخ برای محاسبه شاخص ها', min_value=dates.min(), max_value=dates.max(), value=dates[0])
+
+with col1:
+    st.subheader("حداکثر توان روزانه")
+    peak_power = max(calculate_daily_peak_power(df, kpi_date, i) for i in range(1, 7))
+    st.metric("Peak Power", f"{peak_power:.2f} kW")
+
+with col2:
+    st.subheader("متوسط بهره برداری از ظرفیت")
+    rated_capacity = 60  # Assuming 60kW rated capacity for each inverter
+    avg_utilization = sum(calculate_capacity_utilization(df, kpi_date, i, rated_capacity) for i in range(1, 7)) / 6
+    st.metric("Avg Utilization", f"{avg_utilization:.2f}%")
+
+with col3:
+    st.subheader("مقایسه تولید انرژی")
+    energy_yields = [calculate_energy_yield(df, kpi_date, i) for i in range(1, 7)]
+    total_energy = sum(energy_yields)
+    st.metric("Total Energy", f"{total_energy:.2f} kWh")
+    
+    # Create a bar chart for energy yield comparison
+    fig = px.bar(x=[f"Inverter {i}" for i in range(1, 7)], y=energy_yields,
+                 labels={'x': 'Inverter', 'y': 'Energy Yield (kWh)'})
+    fig.update_layout(title='مقایسه تولید انرژی بین اینورترها', height=300)
+    st.plotly_chart(fig, use_container_width=True)
+
+
+
+
+##############
 
 def create_plot(variable, selected_date, selected_inverter, selected_number=None):
     if variable in ['Iac', 'Ipv', 'Uac', 'Upv']:
