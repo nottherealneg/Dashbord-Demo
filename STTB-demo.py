@@ -431,7 +431,7 @@ df_weather = load_weather_data()
 
 def create_weather_plot(variable, selected_date, selected_plant_id):
     day_df = df_weather[(df_weather['Date'] == selected_date) & (df_weather['PLANT_ID'] == selected_plant_id)]
-    fig = px.area(x=day_df['DATE_TIME'], y=day_df[variable], name=variable)
+    fig = px.area(x=day_df['DATE_TIME'], y=day_df[variable])
     
     y_axis_titles = {
         'IRRADIATION': 'تابش',
