@@ -273,13 +273,14 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
     else:
         return None
 
+########
 def create_settings(variable, key_prefix):
     with st.expander(f" تنظیمات ⚙️", expanded=False):
         st.markdown('<style>div[data-testid="stExpander"] div[role="button"] p {color: #0066cc;}</style>', unsafe_allow_html=True)
         if variable == 'Eac Total':
             min_year = df['TIMESTAMP'].dt.year.min()
             max_year = df['TIMESTAMP'].dt.year.max()
-            selected_year = st.selectbox('سال', range(min_year, max_year + 1), key=f'{key_prefix}_year')
+            selected_year = st.selectbox('تازیخ', range(min_year, max_year + 1), key=f'{key_prefix}_date')
             return None, None, None, selected_year
         
         selected_date = st.date_input('تاریخ', min_value=dates.min(), max_value=dates.max(), value=dates[0], key=f'{key_prefix}_date')
