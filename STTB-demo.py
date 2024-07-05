@@ -475,10 +475,8 @@ def create_weather_settings(variable, key_prefix):
         selected_plant_id = st.selectbox('Plant ID', df_weather['PLANT_ID'].unique(), key=f'{key_prefix}_plant_id')
     return selected_date, selected_plant_id
 
-weather_variables = ['IRRADIATION', 'AMBIENT_TEMPERATURE', 'MODULE_TEMPERATURE']
 def create_weather_plots(header, weather_variables):
     st.header(header)
-    weather_variables = ['IRRADIATION', 'AMBIENT_TEMPERATURE', 'MODULE_TEMPERATURE']
     cols = st.columns(len(weather_variables))
     for i, variable in enumerate(weather_variables):
         with cols[i]:
@@ -489,14 +487,9 @@ def create_weather_plots(header, weather_variables):
             else:
                 st.warning(f"No data available for {variable}")
 
-########################                
-
-
-create_section_plots("دمای اینورتر", ['Temp'])
+# Usage
 create_weather_plots('(°C) دمای ماژول', ['MODULE_TEMPERATURE'])
-
 create_weather_plots('(°C) دمای محیط ', ['AMBIENT_TEMPERATURE'])
-
 create_weather_plots('تابش', ['IRRADIATION'])
 
 
