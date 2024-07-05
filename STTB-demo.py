@@ -502,11 +502,8 @@ create_weather_plots('تابش', ['IRRADIATION'])
 @st.cache_data
 def load_weather1_data():
     
-    
-    
     df_weather1 = pd.read_excel('Data-weather1.xlsx')
-    df_weather1['DATE_TIME'] = pd.to_datetime(df_weather1['DATE_TIME'])
-    df_weather1['Date'] = df_weather1['DATE_TIME'].dt.date
+    df_weather1['Date'] = pd.to_datetime(df_weather1[['Year', 'Month', 'Day']])
     
     return df_weather1
 
