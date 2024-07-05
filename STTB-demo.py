@@ -508,7 +508,7 @@ def create_weather1_plot(variable, selected_date):
         fig = px.pie(values=humidity_counts.values, names=humidity_counts.index, title='Humidity Distribution')
         fig.update_traces(textposition='inside', textinfo='percent+label')
     else:
-        fig = go.Figure(df_weather1, y=variable, title=f'{variable} Distribution')
+        fig = go.Figure(df_weather1, y=variable)
     
     fig.update_layout(height=400, margin=dict(l=50, r=50, t=50, b=50))
     return fig
