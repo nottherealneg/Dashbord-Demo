@@ -294,8 +294,8 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
         return fig
     
     if variable == 'Temp':
-        # Create a heatmap for all inverters
-        inverters = range(1, 7)  # Assuming 6 inverters
+        
+        inverters = range(1, 7)  
         temp_data = []
         for inv in inverters:
             column_name = get_column_name(variable, inverter=inv)
