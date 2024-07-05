@@ -194,7 +194,7 @@ with col1:
     st.metric("Peak Power", f"{peak_power:.2f} kW")
 
 with col2:
-    st.subheader("متوسط ظرفیت بهره برداری  ")
+    st.subheader("متوسط ظرفیت بهره برداری ")
     rated_capacity = 80  # Assuming 80kW rated capacity for each inverter
     avg_utilization = sum(calculate_capacity_utilization(df, kpi_date, i, rated_capacity) for i in range(1, 7)) / 6
     st.metric("Avg Utilization", f"{avg_utilization:.2f}%")
@@ -416,7 +416,7 @@ create_section_plots("ولتاژ", ['Uac', 'Upv'])
 
 
 
-####################
+####################Data-weather2
 @st.cache_data
 def load_weather_data():
     df_weather = pd.read_excel('Data-weather2.xlsx')
