@@ -545,7 +545,7 @@ def create_weather1_settings(key_prefix):
     return selected_date
 
 def create_weather1_plots():
-    
+    st.header("اطلاعات آب و هوایی اضافی")
     
     col1, col2 = st.columns(2)
     
@@ -560,7 +560,6 @@ def create_weather1_plots():
         st.plotly_chart(fig_wind_speed, use_container_width=True)
 
 create_weather1_plots()
-
 
 ###########################
 # Data information
