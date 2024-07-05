@@ -514,7 +514,7 @@ def create_humidity_plot(selected_date):
     day_df = df_weather1[df_weather1['Date'] == selected_date]
     fig = go.Figure(go.Bar(x=day_df['Hours'], y=day_df['Humidity']))
     fig.update_layout(
-        title='Humidity vs Hour',
+        title='رطوبت',
         xaxis_title="Hour",
         yaxis_title="Humidity (%)",
         height=400,
@@ -542,7 +542,7 @@ def create_weather1_settings(key_prefix):
     return selected_date
 
 def create_weather1_plots():
-    st.header("اطلاعات آب و هوایی اضافی")
+    
     
     col1, col2 = st.columns(2)
     
