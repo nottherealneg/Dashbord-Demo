@@ -423,24 +423,34 @@ df_weather = load_weather_data()
 def create_weather_plot(variable, selected_date, selected_plant_id):
     day_df = df_weather[(df_weather['Date'] == selected_date) & (df_weather['PLANT_ID'] == selected_plant_id)]
     
-    fig = go.Figure(go.Scatter(x=day_df['Hours'], y=day_df[variable], name=variable))
-    
-    y_axis_titles = {
-        'IRRADIATION': 'تابش',
-        'AMBIENT_TEMPERATURE': ' (°C) دمای محیط ',
-        'MODULE_TEMPERATURE': ' (°C) دمای ماژول '
-    }
-    
-    y_axis_title = y_axis_titles.get(variable, variable)
+    if variable == 'IRRADIATION':
+        fig = px.density_scatter(day_df, x='Hours', y=variable,
+                                 labels={'Hours': 'Hours', variable: 'Irradiation'},
+                                 color_continuous_scale='YlOrRd',
+                                 title=f'Irradiation Density for Plant ID {selected_plant_id} on {selected_date}')
+        fig.update_traces(marker=dict(size=8))
+    else:
+        fig = go.Figure(go.Scatter(x=day_df['Hours'], y=day_df[variable], name=variable))
+        
+        y_axis_titles = {
+            'AMBIENT_TEMPERATURE': 'Ambient Temperature (°C)',
+            'MODULE_TEMPERATURE': 'Module Temperature (°C)'
+        }
+        
+        y_axis_title = y_axis_titles.get(variable, variable)
+        
+        fig.update_layout(
+            title=f'{variable} for Plant ID {selected_plant_id} on {selected_date}',
+            xaxis_title="Hours",
+            yaxis_title=y_axis_title,
+        )
     
     fig.update_layout(
-        
-        xaxis_title="ساعت",
-        yaxis_title=y_axis_title,
         height=400,
         margin=dict(l=50, r=50, t=50, b=50),
     )
     return fig
+
 
 def create_weather_settings(variable, key_prefix):
     with st.expander(f"تنظیمات ⚙️", expanded=False):
@@ -473,14 +483,12 @@ create_weather_plots()
 
 
 
-
-
-
-
-
+###########################
 # Data information
-if st.checkbox("**نمایش دیتا**"):
+if st.checkbox("**1 نمایش دیتا**"):
    st.dataframe(df)  
+if st.checkbox("**2 نمایش دیتا**"):
+   st.dataframe(df_weather) 
 
 # About Us section
 if st.checkbox("**درباره ما**"):
