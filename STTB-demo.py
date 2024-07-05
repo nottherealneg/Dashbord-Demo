@@ -247,7 +247,7 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
                     'threshold' : {'line': {'color': "red", 'width': 4}, 'thickness': 0.75, 'value': 90}}))
             fig.update_layout(height=400)
         elif variable in ['Eac', 'Eac Total']:
-            fig = go.Figure(go.line(x=day_df['Hours'], y=day_df[column_name], name=f'{variable} (Inverter {selected_inverter})'))
+            fig = go.Figure(go.Scatter(x=day_df['Hours'], y=day_df[column_name], name=f'{variable} (Inverter {selected_inverter})'))
         else:
             fig = go.Figure(go.Scatter(x=day_df['Hours'], y=day_df[column_name], name=f'{variable} (Inverter {selected_inverter})'))
         
