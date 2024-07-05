@@ -281,7 +281,7 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
                     'steps' : [
                         {'range': [0, 50], 'color': "lightgray"},
                         {'range': [50, 80], 'color': "gray"},
-                        {'range': [80, 100], 'color': "yello"}],
+                        {'range': [80, 100], 'color': "yellow"}],
                     'threshold' : {'line': {'color': "orange", 'width': 4}, 'thickness': 0.75, 'value': 90}}))
             fig.update_layout(height=400)
         elif variable in ['Eac', 'Eac Total']:
