@@ -546,6 +546,8 @@ if st.checkbox("**1 نمایش دیتا**"):
    st.dataframe(df)  
 if st.checkbox("**2 نمایش دیتا**"):
    st.dataframe(df_weather) 
+if st.checkbox("**3نمایش دیتا**"):
+   st.dataframe(df_weather1) 
 
 # About Us section
 if st.checkbox("**درباره ما**"):
