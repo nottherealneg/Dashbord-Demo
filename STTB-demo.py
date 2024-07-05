@@ -190,7 +190,7 @@ with col1:
 
 with col2:
     st.subheader("متوسط بهره برداری از ظرفیت")
-    rated_capacity = 60  # Assuming 60kW rated capacity for each inverter
+    rated_capacity = 80  # Assuming 60kW rated capacity for each inverter
     avg_utilization = sum(calculate_capacity_utilization(df, kpi_date, i, rated_capacity) for i in range(1, 7)) / 6
     st.metric("Avg Utilization", f"{avg_utilization:.2f}%")
 
@@ -207,7 +207,7 @@ energy_yields = [calculate_energy_yield(df, kpi_date, i) for i in range(1, 7)]
 # Create a bar chart for energy yield comparison
 fig = px.bar(x=[f"Inverter {i}" for i in range(1, 7)], y=energy_yields,
                  labels={'x': 'Inverter', 'y': 'Energy Yield (kWh)'})
-fig.update_layout(title='مقایسه تولید انرژی بین اینورترها', height=100)
+fig.update_layout(title='مقایسه تولید انرژی بین اینورترها', height=300)
 st.plotly_chart(fig, use_container_width=True)
 
 
