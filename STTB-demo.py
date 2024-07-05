@@ -133,27 +133,38 @@ with col1:
 
 with col2:
     st.markdown('<p class="custom-title">مانیتورینگ هوشمند شرکت سـولار تابش توان بین الملل</p>', unsafe_allow_html=True) 
+#########################
 
-#vars
+plot_variables = ['Pdc', 'Pac', 'Iac', 'Ipv', 'Uac', 'Upv', 'Eac', 'Eac Total', 'InvEfficient']
+
 def get_column_name(variable, number=None, inverter=None):
-    if variable in ['Iac', 'Ipv']:
-        return f'{variable}{number}(A)_inv_{inverter}'
-    elif variable in ['Uac', 'Upv']:
-        return f'{variable}{number}(V)_inv_{inverter}'
+    if variable in ['Iac', 'Ipv', 'Uac', 'Upv']:
+        return f'{variable}{number}({get_unit(variable)})_inv_{inverter}'
     elif variable in ['Pac', 'Pdc']:
         return f'{variable}(kW)_inv_{inverter}'
     elif variable == 'Eac':
         return f'{variable}(kWh)_inv_{inverter}'
     elif variable == 'Eac Total':
         return f'{variable}(kWh)_inv_{inverter}'
-    elif variable == 'invEfficient':
+    elif variable == 'InvEfficient':
         return f'{variable}(%)_inv_{inverter}'
     else:
         return f'{variable}_inv_{inverter}'
 
-plot_variables = ['Pdc', 'Pac', 'Iac', 'Ipv', 'Uac', 'Upv', 'Eac', 'Eac Total', 'invEfficient']
+def get_unit(variable):
+    if variable in ['Iac', 'Ipv']:
+        return 'A'
+    elif variable in ['Uac', 'Upv']:
+        return 'V'
+    else:
+        return ''
+############################################################
+
 def create_plot(variable, selected_date, selected_inverter, selected_number=None):
-    column_name = get_column_name(variable, selected_number, selected_inverter)
+    if variable in ['Iac', 'Ipv', 'Uac', 'Upv']:
+        column_name = get_column_name(variable, selected_number, selected_inverter)
+    else:
+        column_name = get_column_name(variable, inverter=selected_inverter)
     
     day_df = df[df['Date'] == selected_date]
     
@@ -181,7 +192,7 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
             'Upv': "(V) DC ولتاژ ",
             'Eac': '(kWh)انرژی ',
             'Eac Total': '(kWh)کل انرژی ',
-            'invEfficient': '(%)کارایی اینورتر '
+            'InvEfficient': '(%)کارایی اینورتر '
         }
         
         y_axis_title = y_axis_titles.get(variable, variable)  
@@ -196,6 +207,8 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
         return fig
     else:
         return None
+   
+####################        
 
 # Create settings
 def create_settings(variable, key_prefix):
@@ -225,12 +238,12 @@ def create_section_plots(header, variables):
             else:
                 st.warning(f"No data available for {variable}")
 
-# Create sections with their respective plots
+
 create_section_plots("توان", ['Pdc', 'Pac'])
 create_section_plots("جریان", ['Iac', 'Ipv'])
 create_section_plots("ولتاژ", ['Uac', 'Upv'])
-create_section_plots("انرژی", ['Eac', 'Eac Total'])
-create_section_plots("بازده", ['invEfficient'])
+create_section_plots("انرژی ", ['Eac', 'Eac Total'])
+create_section_plots(" کارایی" , [ 'InvEfficient'])
 
 
 
