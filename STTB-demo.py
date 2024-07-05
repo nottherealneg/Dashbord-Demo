@@ -484,7 +484,8 @@ create_weather_plots('(°C) دمای محیط ', ['AMBIENT_TEMPERATURE'])
 create_weather_plots('تابش', ['IRRADIATION'])
 
 
-########
+########weather1
+
 @st.cache_data
 def load_weather1_data():
     df_weather1 = pd.read_excel('Data-weather1.xlsx')
@@ -495,7 +496,7 @@ df_weather1 = load_weather1_data()
 
 def create_weather1_plot(variable, selected_date):
     day_df = df_weather1[df_weather1['Date'].dt.date == selected_date]
-    fig = px.area(x=day_df['Hours'], y=day_df[variable])
+    fig = go.scatter(x=day_df['Hours'], y=day_df[variable])
     
     y_axis_titles = {
         'Humidity': 'رطوبت (%)',
@@ -531,6 +532,10 @@ def create_weather1_plots(header, weather_variables):
 
 create_weather1_plots('نمودار رطوبت', ['Humidity'])
 create_weather1_plots('نمودار سرعت باد', ['Wind Speed'])
+
+
+
+
 ###########################
 # Data information
 if st.checkbox("**1 نمایش دیتا**"):
