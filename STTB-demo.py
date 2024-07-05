@@ -6,6 +6,9 @@ import plotly.graph_objs as go
 import plotly.express as px
 import base64
 
+
+####################
+
 # PAGE CONFIG
 st.set_page_config(
     page_title="STTB Monitoring",
@@ -13,6 +16,7 @@ st.set_page_config(
     layout='wide',
     initial_sidebar_state='expanded')
 
+####################
 
 #title set
 
@@ -27,6 +31,7 @@ st.markdown("""
 }
 </style>
 """, unsafe_allow_html=True)
+####################
 
 # Add background
 def bg(image_file):
@@ -45,6 +50,7 @@ def bg(image_file):
     )
 
 bg('bg4.jpg')  
+####################
 
 # Sidebar
 st.markdown("""
@@ -69,7 +75,7 @@ def login():
 def logout():
     st.session_state.logged_in = False
 
-# Sidebar
+
 with st.sidebar:
     st.markdown("#  خوش آمدید")
     if not st.session_state.logged_in:
@@ -98,11 +104,14 @@ if st.session_state.logged_in:
     st.write('شما وارد شده‌اید. محتوای اصلی اینجا نمایش داده می‌شود.')
 else:
     st.write('← لطفا برای دسترسی به محتوا وارد شوید')
+####################
 
 # Chatbot
 prompt = st.chat_input("سلام،چه طور میتونم کمکتون کنم ؟ : 🤖")
 if prompt:
     st.write(f"کاربر میهمان: {prompt}")
+
+####################Dash2
 
 # Load data
 @st.cache_data
@@ -116,6 +125,7 @@ def load_data():
 
 df = load_data()
 dates = df['Date'].unique()
+####################
 
 # Add logo
 logo = Image.open('logo.png')
@@ -213,9 +223,9 @@ def create_energy_yield_chart(kpi_date, energy_yields):
         ))
 
     fig.update_layout(
-        title="Energy Yield Comparison",
+        
         xaxis_title="Energy Yield (kWh)",
-        yaxis_title="Inverters",
+        yaxis_title="اینورتر",
         height=400,
         barmode='stack',
         showlegend=False,
@@ -238,7 +248,7 @@ def create_energy_yield_chart(kpi_date, energy_yields):
 
 ######
 
-st.markdown("مقایسه تولید انرژی")
+st.markdown(" Energy yield مقایسه ")
 
 col1 = st.columns(1)[0]  
 
