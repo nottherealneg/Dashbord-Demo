@@ -203,6 +203,7 @@ with col3:
 
 
 ###############
+st.header("مقایسه تولید انرژی بین اینورترها")
 energy_yields = [calculate_energy_yield(df, kpi_date, i) for i in range(1, 7)]
 # Create a bar chart for energy yield comparison
 fig = px.bar(x=[f"Inverter {i}" for i in range(1, 7)], y=energy_yields,
