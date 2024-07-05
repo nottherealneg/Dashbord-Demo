@@ -209,7 +209,7 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
             name='Avg Eac Total'
         ))
         fig.update_layout(
-            title=f'Average Eac Total for Year {selected_year}',
+            title=f'Average Eac Total {selected_year}',
             xaxis_title="Inverter",
             yaxis_title="Average Eac Total (kWh)",
             xaxis=dict(tickmode='linear', tick0=1, dtick=1),
