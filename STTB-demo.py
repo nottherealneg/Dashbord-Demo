@@ -58,19 +58,64 @@ st.markdown("""
 
 ######sign in
 ###### sidebar
-with st.sidebar:
+# Initialize session state variables
+if 'logged_in' not in st.session_state:
+    st.session_state.logged_in = False
 
+def login():
+    st.session_state.logged_in = True
+
+def logout():
+    st.session_state.logged_in = False
+
+# Sidebar
+with st.sidebar:
+    if not st.session_state.logged_in:
+        st.markdown('## ورود به سیستم')
+        username = st.text_input('نام کاربری')
+        password = st.text_input('رمز عبور', type='password')
+        if st.button('ورود'):
+            # Here you should implement proper authentication
+            # This is a simple example and is not secure
+            if username == 'admin' and password == 'password':
+                login()
+                st.experimental_rerun()
+            else:
+                st.error('نام کاربری یا رمز عبور اشتباه است')
+    else:
+        st.markdown('## خوش آمدید')
+        st.markdown(f'کاربر: {username}')
+        if st.button('خروج'):
+            logout()
+            st.experimental_rerun()
+
+    # Rest of your sidebar content
     st.markdown(' خوش آمدید' )
     home = st.button("  🏠 خانه ")
     dashboard = st.button("📊 داشبورد")
     settings = st.button("⚙️ تنظیمات")
 
-#################################### chatbot
-messages = st.container(height=500,border=True)
-if prompt := st.chat_input("سلام،خوش آمدید 🤖"):
-    messages.chat_message("کاربر میهمان").write(prompt)
-    messages.chat_message("دستیار").write(f"🤖: {prompt}")
+# Main content
+if st.session_state.logged_in:
+    st.write('شما وارد شده‌اید. محتوای اصلی اینجا نمایش داده می‌شود.')
+    # Your main app content goes here
+else:
+    st.write('لطفا برای دسترسی به محتوا وارد شوید.')
 
+
+#########
+#with st.sidebar:
+
+    #st.markdown(' خوش آمدید' )
+    #home = st.button("  🏠 خانه ")
+    #dashboard = st.button("📊 داشبورد")
+    #settings = st.button("⚙️ تنظیمات")
+
+#################################### chatbot
+#messages = st.container(height=500,border=True)
+prompt = st.chat_input("سلام،خوش آمدید 🤖")
+if prompt:
+    st.write(f"کاربر میهمان: {prompt}")
 #############################
 
 # Load data
