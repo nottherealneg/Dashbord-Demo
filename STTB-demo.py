@@ -220,12 +220,14 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
     if column_name in day_df.columns:
         if variable == 'InvEfficient':
             # Gauge chart for efficiency
+
             efficiency = day_df[column_name].mean()
+
             fig = go.Figure(go.Indicator(
                 mode = "gauge+number",
                 value = efficiency,
                 domain = {'x': [0, 1], 'y': [0, 1]},
-                title = {'text': f"Inverter {selected_inverter} Efficiency"},
+                title = {'text': f"اینورتر {selected_inverter} میانگین بازده"},
                 gauge = {
                     'axis': {'range': [None, 100]},
                     'bar': {'color': "darkblue"},
@@ -300,11 +302,14 @@ def create_section_plots(header, variables):
                 st.warning(f"No data available for {variable}")
 
 
+create_section_plots("انرژی ", ['Eac', 'Eac Total'])
+
+create_section_plots(" کارایی" , [ 'InvEfficient'])
+
 create_section_plots("توان", ['Pdc', 'Pac'])
 create_section_plots("جریان", ['Iac', 'Ipv'])
 create_section_plots("ولتاژ", ['Uac', 'Upv'])
-create_section_plots("انرژی ", ['Eac', 'Eac Total'])
-create_section_plots(" کارایی" , [ 'InvEfficient'])
+
 
 
 
