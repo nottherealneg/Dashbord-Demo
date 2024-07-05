@@ -178,9 +178,9 @@ def calculate_energy_yield(df, date, inverter):
 # KPI Section
 st.header("شاخص های کلیدی عملکرد", divider='rainbow')
 # Date selection for KPIs
-kpi_date = st.date_input('تاریخ برای محاسبه شاخص ها', min_value=dates.min(), max_value=dates.max(), value=dates[0])
+kpi_date = st.date_input('انتخاب تاریخ جهت محاسبه شاخص ها', min_value=dates.min(), max_value=dates.max(), value=dates[0])
 
-col1, col2, col3 = st.columns(3)
+col1, col2 = st.columns(2)
 
 
 
@@ -195,17 +195,22 @@ with col2:
     avg_utilization = sum(calculate_capacity_utilization(df, kpi_date, i, rated_capacity) for i in range(1, 7)) / 6
     st.metric("Avg Utilization", f"{avg_utilization:.2f}%")
 
-with col3:
-    st.subheader("مقایسه تولید انرژی")
-    energy_yields = [calculate_energy_yield(df, kpi_date, i) for i in range(1, 7)]
-    total_energy = sum(energy_yields)
-    st.metric("Total Energy", f"{total_energy:.2f} kWh")
+
+
+    col1,col2=st.columns(2)
+    with col1:
+        st.subheader("مقایسه تولید انرژی")
+        energy_yields = [calculate_energy_yield(df, kpi_date, i) for i in range(1, 7)]
+        total_energy = sum(energy_yields)
+        st.metric("انرژی کل", f"{total_energy:.2f} kWh")
+
     
+    with col2:
     # Create a bar chart for energy yield comparison
-    fig = px.bar(x=[f"Inverter {i}" for i in range(1, 7)], y=energy_yields,
+        fig = px.bar(x=[f"Inverter {i}" for i in range(1, 7)], y=energy_yields,
                  labels={'x': 'Inverter', 'y': 'Energy Yield (kWh)'})
-    fig.update_layout(title='مقایسه تولید انرژی بین اینورترها', height=300)
-    st.plotly_chart(fig, use_container_width=True)
+        fig.update_layout(title='مقایسه تولید انرژی بین اینورترها', height=300)
+        st.plotly_chart(fig, use_container_width=True)
 
 
 
