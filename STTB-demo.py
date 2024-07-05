@@ -56,10 +56,6 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-
-
-######sign in
-
 # Initialize session state variables
 if 'logged_in' not in st.session_state:
     st.session_state.logged_in = False
@@ -85,13 +81,10 @@ with st.sidebar:
             else:
                 st.error('نام کاربری یا رمز عبور اشتباه است')
     else:
-        
         st.markdown(f'کاربر: {username}')
         if st.button('خروج'):
             logout()
             st.experimental_rerun()
-
-    #
     
     home = st.button("  🏠 خانه ")
     dashboard = st.button("📊 داشبورد")
@@ -100,16 +93,13 @@ with st.sidebar:
 # Main content
 if st.session_state.logged_in:
     st.write('شما وارد شده‌اید. محتوای اصلی اینجا نمایش داده می‌شود.')
-   
 else:
     st.write('← لطفا برای دسترسی به محتوا وارد شوید')
 
-#################################### chatbot
-#messages = st.container(height=500,border=True)
+# Chatbot
 prompt = st.chat_input("سلام،چه طور میتونم کمکتون کنم ؟ : 🤖")
 if prompt:
     st.write(f"کاربر میهمان: {prompt}")
-#############################
 
 # Load data
 @st.cache_data
@@ -124,10 +114,7 @@ def load_data():
 df = load_data()
 dates = df['Date'].unique()
 
-####################################
-
-
- #add logo
+# Add logo
 logo = Image.open('logo.png')
 col1, col2 = st.columns([1, 3]) 
 
@@ -136,7 +123,6 @@ with col1:
 
 with col2:
     st.markdown('<p class="custom-title">مانیتورینگ هوشمند شرکت سـولار تابش توان بین الملل</p>', unsafe_allow_html=True) 
-#########################
 
 plot_variables = ['Pdc', 'Pac', 'Iac', 'Ipv', 'Uac', 'Upv', 'Eac', 'Eac Total', 'InvEfficient']
 
@@ -161,7 +147,7 @@ def get_unit(variable):
         return 'V'
     else:
         return ''
-############################################################
+
 def calculate_daily_peak_power(df, date, inverter):
     day_df = df[(df['Date'] == date) & (df[f'Pac(kW)_inv_{inverter}'].notna())]
     return day_df[f'Pac(kW)_inv_{inverter}'].max() if not day_df.empty else 0
@@ -177,12 +163,9 @@ def calculate_energy_yield(df, date, inverter):
 
 # KPI Section
 st.header("شاخص های کلیدی عملکرد", divider='rainbow')
-# Date selection for KPIs
 kpi_date = st.date_input('انتخاب تاریخ جهت محاسبه شاخص ها', min_value=dates.min(), max_value=dates.max(), value=dates[0])
 
-
-
-col1, col2 ,col3= st.columns(3)
+col1, col2, col3 = st.columns(3)
 with col1:
     st.subheader("حداکثر توان روزانه")
     peak_power = max(calculate_daily_peak_power(df, kpi_date, i) for i in range(1, 7))
@@ -190,7 +173,7 @@ with col1:
 
 with col2:
     st.subheader("متوسط بهره برداری از ظرفیت")
-    rated_capacity = 80  # Assuming 60kW rated capacity for each inverter
+    rated_capacity = 80  # Assuming 80kW rated capacity for each inverter
     avg_utilization = sum(calculate_capacity_utilization(df, kpi_date, i, rated_capacity) for i in range(1, 7)) / 6
     st.metric("Avg Utilization", f"{avg_utilization:.2f}%")
 
@@ -199,21 +182,42 @@ with col3:
     energy_yields = [calculate_energy_yield(df, kpi_date, i) for i in range(1, 7)]
     total_energy = sum(energy_yields)
     st.metric("Total Energy", f"{total_energy:.2f} kWh")
-    
 
-
-###############
 st.markdown("مقایسه تولید انرژی بین اینورترها")
 energy_yields = [calculate_energy_yield(df, kpi_date, i) for i in range(1, 7)]
-# Create a bar chart for energy yield comparison
 fig = px.bar(x=[f"Inverter {i}" for i in range(1, 7)], y=energy_yields,
-                 labels={'x': 'Inverter', 'y': 'Energy Yield (kWh)'})
+             labels={'x': 'Inverter', 'y': 'Energy Yield (kWh)'})
 fig.update_layout(height=300)
 st.plotly_chart(fig, use_container_width=True)
 
+def calculate_avg_eac_total(df, year):
+    year_df = df[df['TIMESTAMP'].dt.year == year]
+    avg_eac_total = []
+    for inverter in range(1, 7):
+        column_name = f'Eac Total(kWh)_inv_{inverter}'
+        avg = year_df[column_name].mean()
+        avg_eac_total.append(avg)
+    return avg_eac_total
 
-##############
-def create_plot(variable, selected_date, selected_inverter, selected_number=None):
+def create_plot(variable, selected_date, selected_inverter, selected_number=None, selected_year=None):
+    if variable == 'Eac Total' and selected_year:
+        avg_eac_total = calculate_avg_eac_total(df, selected_year)
+        fig = go.Figure(go.Scatter(
+            x=list(range(1, 7)),
+            y=avg_eac_total,
+            mode='lines+markers',
+            name='Avg Eac Total'
+        ))
+        fig.update_layout(
+            title=f'Average Eac Total for Year {selected_year}',
+            xaxis_title="Inverter",
+            yaxis_title="Average Eac Total (kWh)",
+            xaxis=dict(tickmode='linear', tick0=1, dtick=1),
+            height=400,
+            margin=dict(l=50, r=50, t=50, b=50),
+        )
+        return fig
+    
     if variable in ['Iac', 'Ipv', 'Uac', 'Upv']:
         column_name = get_column_name(variable, selected_number, selected_inverter)
     else:
@@ -223,7 +227,6 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
     
     if column_name in day_df.columns:
         if variable == 'InvEfficient':
-            # Gauge chart for efficiency
             efficiency = day_df[column_name].mean()
             fig = go.Figure(go.Indicator(
                 mode = "gauge+number",
@@ -240,13 +243,10 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
                     'threshold' : {'line': {'color': "red", 'width': 4}, 'thickness': 0.75, 'value': 90}}))
             fig.update_layout(height=400)
         elif variable in ['Eac', 'Eac Total']:
-            # Bar plot for Eac and Eac Total
             fig = go.Figure(go.Bar(x=day_df['Hours'], y=day_df[column_name], name=f'{variable} (Inverter {selected_inverter})'))
         else:
-            # Line plot for other variables
             fig = go.Figure(go.Scatter(x=day_df['Hours'], y=day_df[column_name], name=f'{variable} (Inverter {selected_inverter})'))
         
-        # Define y-axis title based on variable
         y_axis_titles = {
             'Iac': "(A) AC جریان ",
             'Pdc': "(kW) DC توان ",
@@ -272,14 +272,16 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
         return fig
     else:
         return None
-   
-####################        
 
-# Create settings
 def create_settings(variable, key_prefix):
-    
     with st.expander(f" تنظیمات ⚙️", expanded=False):
         st.markdown('<style>div[data-testid="stExpander"] div[role="button"] p {color: #0066cc;}</style>', unsafe_allow_html=True)
+        if variable == 'Eac Total':
+            min_year = df['TIMESTAMP'].dt.year.min()
+            max_year = df['TIMESTAMP'].dt.year.max()
+            selected_year = st.selectbox('سال', range(min_year, max_year + 1), key=f'{key_prefix}_year')
+            return None, None, None, selected_year
+        
         selected_date = st.date_input('تاریخ', min_value=dates.min(), max_value=dates.max(), value=dates[0], key=f'{key_prefix}_date')
         selected_inverter = st.selectbox(f'شماره اینورتر', range(1, 7), key=f'{key_prefix}_inverter')
         if variable in ['Iac', 'Ipv', 'Uac', 'Upv']:
@@ -289,33 +291,29 @@ def create_settings(variable, key_prefix):
                                            key=f'{key_prefix}_شماره')
         else:
             selected_number = None
-    return selected_date, selected_inverter, selected_number
+    return selected_date, selected_inverter, selected_number, None
 
-# Create plots for a section
+#######
 def create_section_plots(header, variables):
     st.header(header)
     cols = st.columns(len(variables))
     for i, variable in enumerate(variables):
         with cols[i]:
-            selected_date, selected_inverter, selected_number = create_settings(variable, f'plot_{variable}')
-            fig = create_plot(variable, selected_date, selected_inverter, selected_number)
+            selected_date, selected_inverter, selected_number, selected_year = create_settings(variable, f'plot_{variable}')
+            if variable == 'Eac Total':
+                fig = create_plot(variable, None, None, None, selected_year)
+            else:
+                fig = create_plot(variable, selected_date, selected_inverter, selected_number)
             if fig:
                 st.plotly_chart(fig, use_container_width=True)
             else:
                 st.warning(f"No data available for {variable}")
 
-create_section_plots("بازده" , [ 'InvEfficient'])
-create_section_plots("انرژی ", ['Eac','Eac Total'])
+create_section_plots("بازده" , ['InvEfficient'])
+create_section_plots("انرژی ", ['Eac', 'Eac Total'])
 create_section_plots("توان", ['Pdc', 'Pac'])
 create_section_plots("جریان", ['Iac', 'Ipv'])
 create_section_plots("ولتاژ", ['Uac', 'Upv'])
-
-
-
-
-
-
-##################################checkbox
 
 # Data information
 if st.checkbox("**نمایش دیتا**"):
@@ -337,3 +335,4 @@ if st.checkbox("**تماس با ما**"):
     st.markdown("""
      **📧** info@solarttb.com
     """)
+
