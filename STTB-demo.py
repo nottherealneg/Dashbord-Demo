@@ -182,7 +182,7 @@ kpi_date = st.date_input('انتخاب تاریخ جهت محاسبه شاخص �
 
 
 
-col1, col2 ,col3= st.columns(2)
+col1, col2 ,col3= st.columns(3)
 with col1:
     st.subheader("حداکثر توان روزانه")
     peak_power = max(calculate_daily_peak_power(df, kpi_date, i) for i in range(1, 7))
