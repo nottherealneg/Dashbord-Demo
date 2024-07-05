@@ -176,7 +176,7 @@ def calculate_energy_yield(df, date, inverter):
     return day_df[f'Eac(kWh)_inv_{inverter}'].max() if not day_df.empty else 0
 
 # KPI Section
-st.header("####شاخص های کلیدی عملکرد")
+st.header("شاخص های کلیدی عملکرد", divider='rainbow')
 # Date selection for KPIs
 kpi_date = st.date_input('تاریخ برای محاسبه شاخص ها', min_value=dates.min(), max_value=dates.max(), value=dates[0])
 
