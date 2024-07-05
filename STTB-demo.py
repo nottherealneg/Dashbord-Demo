@@ -275,7 +275,23 @@ def create_plot(variable, selected_date, selected_inverter, selected_number=None
 
 # Create settings
 def create_settings(variable, key_prefix):
-    with st.expander(f"{variable} تنظیمات", expanded=False):
+    # Dictionary for Persian translations
+    persian_names = {
+        'Iac': "(A) AC جریان ",
+        'Pdc': "(kW) DC توان ",
+        'Pac': "(kW) AC توان",
+        'Ipv': "(A) DC جریان ",
+        'Uac': "(V) AC ولتاژ ",
+        'Upv': "(V) DC ولتاژ ",
+        'Eac': '(kWh)انرژی ',
+        'Eac Total': '(kWh)کل انرژی ',
+        'InvEfficient': '(%)کارایی اینورتر '
+    }
+
+    # Use the Persian name if available, otherwise use the original variable name
+    expander_title = persian_names.get(variable, variable)
+
+    with st.expander(f"{expander_title} تنظیمات", expanded=False):
         st.markdown('<style>div[data-testid="stExpander"] div[role="button"] p {color: #0066cc;}</style>', unsafe_allow_html=True)
         selected_date = st.date_input('تاریخ', min_value=dates.min(), max_value=dates.max(), value=dates[0], key=f'{key_prefix}_date')
         selected_inverter = st.selectbox(f'شماره اینورتر', range(1, 7), key=f'{key_prefix}_inverter')
@@ -301,11 +317,8 @@ def create_section_plots(header, variables):
             else:
                 st.warning(f"No data available for {variable}")
 
-
+create_section_plots(" بازده" , [ 'InvEfficient'])
 create_section_plots("انرژی ", ['Eac', 'Eac Total'])
-
-create_section_plots(" کارایی" , [ 'InvEfficient'])
-
 create_section_plots("توان", ['Pdc', 'Pac'])
 create_section_plots("جریان", ['Iac', 'Ipv'])
 create_section_plots("ولتاژ", ['Uac', 'Upv'])
