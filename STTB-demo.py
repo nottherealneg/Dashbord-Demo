@@ -494,28 +494,22 @@ def load_weather1_data():
 
 df_weather1 = load_weather1_data()
 
-
-
 def create_weather1_plot(variable, selected_date):
     day_df = df_weather1[df_weather1['Date'].dt.date == selected_date]
-    
     if variable == 'Humidity':
         bins = [0, 20, 30, 40, 50, 60, 70, 80, 90, 100]
         labels = ['0-20%', '20-30%', '30-40%', '40-50%', '50-60%', '60-70%', '70-80%', '80-90%', '90-100%']
-        df_weather1['Humidity_Range'] = pd.cut(df_weather1['Humidity'], bins=bins, labels=labels, include_lowest=True)
-        humidity_counts = df_weather1['Humidity_Range'].value_counts().sort_index()
-        
-        fig = px.pie(values=humidity_counts.values, names=humidity_counts.index)
+        day_df['Humidity_Range'] = pd.cut(day_df['Humidity'], bins=bins, labels=labels, include_lowest=True)
+        humidity_counts = day_df['Humidity_Range'].value_counts().sort_index()
+        fig = px.pie(values=humidity_counts.values, names=humidity_counts.index, title='Humidity Distribution')
         fig.update_traces(textposition='inside', textinfo='percent+label')
-
-    else:  
+    else:
         fig = px.area(day_df, x='Hours', y=variable)
         y_axis_title = '(m/s) سرعت باد ' if variable == 'Wind Speed' else variable
         fig.update_layout(
             xaxis_title="زمان",
             yaxis_title=y_axis_title,
         )
-    
     fig.update_layout(
         height=400,
         margin=dict(l=50, r=50, t=50, b=50),
@@ -533,8 +527,8 @@ def create_weather1_plots(header, weather_variables):
     cols = st.columns(len(weather_variables))
     for i, variable in enumerate(weather_variables):
         with cols[i]:
-            create_weather1_settings(variable, f'weather1_{variable}')
-            fig = create_weather1_plot(variable, None)
+            selected_date = create_weather1_settings(variable, f'weather1_{variable}')
+            fig = create_weather1_plot(variable, selected_date)
             if fig is not None:
                 st.plotly_chart(fig, use_container_width=True)
             else:
