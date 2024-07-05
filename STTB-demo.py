@@ -57,8 +57,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 with st.sidebar:
     
-    with st.echo():
-        st.write("This code will be printed to the sidebar.")
+    
 
     
     st.success("Done!")
@@ -67,10 +66,39 @@ with st.sidebar:
     dashboard = st.button("📊 داشبورد")
     settings = st.button("⚙️ تنظیمات")
 
-#chatbot
-prompt = st.chat_input("سلام خوش آمدید")
-if prompt:
-    st.write(f"User has sent the following prompt: {prompt}")
+#################################### chatbot 
+
+# Initialize chat history
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+# Display chat messages from history on app rerun
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+
+# React to user input
+if prompt := st.chat_input("سلام خوش آمدید"):
+    # Display user message in chat message container
+    st.chat_message("user").markdown(prompt)
+    # Add user message to chat history
+    st.session_state.messages.append({"role": "user", "content": prompt})
+
+ 
+    response = f"شما گفتید: {prompt}"
+
+    # Display assistant response in chat message container
+    with st.chat_message("assistant"):
+        st.markdown(response)
+    # Add assistant response to chat history
+    st.session_state.messages.append({"role": "assistant", "content": response})
+
+# Add a button to clear the chat history
+if st.button("پاک کردن تاریخچه گفتگو"):
+    st.session_state.messages = []
+    st.experimental_rerun()
+
+#############################
 
 # Load data
 @st.cache_data
