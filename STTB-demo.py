@@ -420,44 +420,53 @@ df_weather = load_weather_data()
 import plotly.express as px
 import plotly.graph_objects as go
 
+@st.cache_data
+def load_weather_data():
+    df_weather = pd.read_excel('Data-weather2.xlsx')
+    df_weather['DATE_TIME'] = pd.to_datetime(df_weather['DATE_TIME'])
+    df_weather['Date'] = df_weather['DATE_TIME'].dt.date
+    return df_weather
+
+df_weather = load_weather_data()
+
 def create_weather_plot(variable, selected_date, selected_plant_id):
     day_df = df_weather[(df_weather['Date'] == selected_date) & (df_weather['PLANT_ID'] == selected_plant_id)]
+    fig = px.area(x=day_df['DATE_TIME'], y=day_df[variable], name=variable)
     
     y_axis_titles = {
-        'IRRADIATION': 'تابش (W/m²)',
+        'IRRADIATION': 'تابش',
         'AMBIENT_TEMPERATURE': '(°C) دمای محیط ',
         'MODULE_TEMPERATURE': '(°C) دمای ماژول'
     }
     y_axis_title = y_axis_titles.get(variable, variable)
     
-    if variable == 'IRRADIATION':
-        fig = px.area(day_df, x='DATE_TIME', y=variable, 
-                      title=f"{variable} on {selected_date}",
-                      labels={'DATE_TIME': 'زمان', variable: y_axis_title})
-        fig.update_traces(fillcolor='rgba(255, 165, 0, 0.5)', line_color='rgb(255, 165, 0)')
-    else:
-        fig = px.line(day_df, x='DATE_TIME', y=variable, 
-                      title=f"{variable} on {selected_date}",
-                      labels={'DATE_TIME': 'زمان', variable: y_axis_title})
-    
     fig.update_layout(
+        xaxis_title="زمان",
+        yaxis_title=y_axis_title,
         height=400,
         margin=dict(l=50, r=50, t=50, b=50),
     )
-    
-    # Add shaded background for nighttime hours
-    fig.add_vrect(
-        x0=day_df['DATE_TIME'].dt.normalize(),
-        x1=day_df['DATE_TIME'].dt.normalize() + pd.Timedelta(hours=6),
-        fillcolor="LightGray", opacity=0.3, layer="below", line_width=0,
-    )
-    fig.add_vrect(
-        x0=day_df['DATE_TIME'].dt.normalize() + pd.Timedelta(hours=18),
-        x1=day_df['DATE_TIME'].dt.normalize() + pd.Timedelta(hours=24),
-        fillcolor="LightGray", opacity=0.3, layer="below", line_width=0,
-    )
-
     return fig
+
+def create_weather_settings(variable, key_prefix):
+    with st.expander(f"تنظیمات ⚙️", expanded=False):
+        st.markdown('<style>div[data-testid="stExpander"] div[role="button"] p {color: #0066cc;}</style>', unsafe_allow_html=True)
+        selected_date = st.date_input('Date', min_value=df_weather['Date'].min(), max_value=df_weather['Date'].max(), value=df_weather['Date'].min(), key=f'{key_prefix}_date')
+        selected_plant_id = st.selectbox('Plant ID', df_weather['PLANT_ID'].unique(), key=f'{key_prefix}_plant_id')
+    return selected_date, selected_plant_id
+
+def create_weather_plots():
+    st.header("دیتای آب و هوایی")
+    weather_variables = ['IRRADIATION', 'AMBIENT_TEMPERATURE', 'MODULE_TEMPERATURE']
+    cols = st.columns(len(weather_variables))
+    for i, variable in enumerate(weather_variables):
+        with cols[i]:
+            selected_date, selected_plant_id = create_weather_settings(variable, f'weather_{variable}')
+            fig = create_weather_plot(variable, selected_date, selected_plant_id)
+            if fig is not None:
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                st.warning(f"No data available for {variable}")
 
 def create_weather_settings(variable, key_prefix):
     with st.expander(f"تنظیمات ⚙️", expanded=False):
