@@ -498,19 +498,21 @@ def create_weather1_plot(variable, selected_date):
     day_df = df_weather1[df_weather1['Date'].dt.date == selected_date]
     
     if variable == 'Humidity':
-        fig = px.bar(day_df, x='Hours', y=variable)
+        # Group humidity data into ranges for the pie chart
+        humidity_ranges = pd.cut(day_df['Humidity'], bins=[0, 20, 40, 60, 80, 100], labels=['0-20%', '21-40%', '41-60%', '61-80%', '81-100%'])
+        humidity_counts = humidity_ranges.value_counts().sort_index()
+        
+        fig = px.pie(values=humidity_counts.values, names=humidity_counts.index, title=f'Humidity Distribution on {selected_date}')
+        fig.update_traces(textposition='inside', textinfo='percent+label')
     else:  # For Wind Speed and potentially other variables
         fig = px.area(day_df, x='Hours', y=variable)
-    
-    y_axis_titles = {
-        'Humidity': 'رطوبت (%)',
-        'Wind Speed': '(m/s) سرعت باد ',
-    }
-    y_axis_title = y_axis_titles.get(variable, variable)
+        y_axis_title = '(m/s) سرعت باد ' if variable == 'Wind Speed' else variable
+        fig.update_layout(
+            xaxis_title="زمان",
+            yaxis_title=y_axis_title,
+        )
     
     fig.update_layout(
-        xaxis_title="زمان",
-        yaxis_title=y_axis_title,
         height=400,
         margin=dict(l=50, r=50, t=50, b=50),
     )
