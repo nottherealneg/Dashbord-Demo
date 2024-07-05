@@ -72,7 +72,7 @@ def logout():
 
 # Sidebar
 with st.sidebar:
-    st.markdown("# خوش آمدید*")
+    st.markdown("#  خوش آمدید")
     if not st.session_state.logged_in:
         st.markdown(' ورود به سیستم')
         username = st.text_input('نام کاربری')
