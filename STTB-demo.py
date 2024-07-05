@@ -13,6 +13,9 @@ st.set_page_config(
     layout='wide',
     initial_sidebar_state='expanded')
 
+
+#title set
+
 st.markdown("""
 <style>
 .custom-title {
@@ -124,6 +127,9 @@ with col1:
 with col2:
     st.markdown('<p class="custom-title">مانیتورینگ هوشمند شرکت سـولار تابش توان بین الملل</p>', unsafe_allow_html=True) 
 
+
+######get data
+
 plot_variables = ['Pdc', 'Pac', 'Iac', 'Ipv', 'Uac', 'Upv', 'Eac', 'Eac Total', 'InvEfficient']
 
 def get_column_name(variable, number=None, inverter=None):
@@ -147,6 +153,8 @@ def get_unit(variable):
         return 'V'
     else:
         return ''
+    
+######################
 
 def calculate_daily_peak_power(df, date, inverter):
     day_df = df[(df['Date'] == date) & (df[f'Pac(kW)_inv_{inverter}'].notna())]
@@ -224,7 +232,7 @@ def create_energy_yield_chart(kpi_date, energy_yields):
     return fig
 
 
-
+######
 
 st.markdown("مقایسه تولید انرژی")
 
