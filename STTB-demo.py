@@ -514,9 +514,9 @@ def create_humidity_plot(selected_date):
     day_df = df_weather1[df_weather1['Date'] == selected_date]
     fig = go.Figure(go.Bar(x=day_df['Hours'], y=day_df['Humidity']))
     fig.update_layout(
-        title='رطوبت',
-        xaxis_title="Hour",
-        yaxis_title="Humidity (%)",
+        
+        xaxis_title="زمان",
+        yaxis_title="رطوبت (%)",
         height=400,
         margin=dict(l=50, r=50, t=50, b=50),
     )
@@ -526,9 +526,9 @@ def create_wind_speed_plot(selected_date):
     day_df = df_weather1[df_weather1['Date'] == selected_date]
     fig = go.Figure(go.Scatter(x=day_df['Hours'], y=day_df['Wind Speed'], mode='lines+markers'))
     fig.update_layout(
-        title='Wind Speed vs Hour',
-        xaxis_title="Hour",
-        yaxis_title="Wind Speed (m/s)",
+        
+        xaxis_title="زمان",
+        yaxis_title=" (m/s) سرعت باد ",
         height=400,
         margin=dict(l=50, r=50, t=50, b=50),
     )
