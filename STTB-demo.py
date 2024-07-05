@@ -182,8 +182,7 @@ kpi_date = st.date_input('تاریخ برای محاسبه شاخص ها', min_v
 
 col1, col2, col3 = st.columns(3)
 
-# Date selection for KPIs
-kpi_date = st.date_input('تاریخ برای محاسبه شاخص ها', min_value=dates.min(), max_value=dates.max(), value=dates[0])
+
 
 with col1:
     st.subheader("حداکثر توان روزانه")
