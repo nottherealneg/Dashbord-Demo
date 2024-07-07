@@ -27,7 +27,7 @@ Sandbacher Weg 133
 TruTraTech GmbH
 
 #### Phone:
-+49 (0) 17674575160
+- +49 (0) 17674575160
 
 ## Email 📧
 info@solarttb.com
