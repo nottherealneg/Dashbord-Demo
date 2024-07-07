@@ -51,7 +51,7 @@ def bg(image_file):
     unsafe_allow_html=True
     )
 
-bg('bg4.jpg')  
+bg('https://raw.githubusercontent.com/nottherealneg/STTB/dash-demo/Dashbord-Demo/bg4.jpg')  
 ####################
 
 # Sidebar
